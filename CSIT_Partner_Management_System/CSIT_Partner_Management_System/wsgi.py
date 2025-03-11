@@ -1,5 +1,5 @@
 """
-WSGI config for CSIT_Partner_Management_System project.
+WSGI config for CSIT_Pantner_Management project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 

@@ -1,5 +1,5 @@
 """
-ASGI config for CSIT_Partner_Management_System project.
+ASGI config for CSIT_Pantner_Management project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
