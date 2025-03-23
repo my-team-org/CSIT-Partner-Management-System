@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="container">
+  <div class="row g-2 mb-3">
+      <div class="col-md-3">
+          <select class="form-select">
+              <option selected>เลือกตัวกรอง 1</option>
+              <option value="1">ตัวเลือก 1</option>
+              <option value="2">ตัวเลือก 2</option>
+          </select>
+      </div>
+      <div class="col-md-3">
+          <select class="form-select">
+              <option selected>เลือกตัวกรอง 2</option>
+              <option value="1">ตัวเลือก A</option>
+              <option value="2">ตัวเลือก B</option>
+          </select>
+      </div>
+      <div class="col-md-3">
+          <select class="form-select">
+              <option selected>เลือกตัวกรอง 3</option>
+              <option value="1">ตัวเลือก X</option>
+              <option value="2">ตัวเลือก Y</option>
+          </select>
+      </div>
+      <div class="col-md-2">
+          <select class="form-select">
+              <option selected>เลือกตัวกรอง 4</option>
+              <option value="1">ตัวเลือก α</option>
+              <option value="2">ตัวเลือก β</option>
+          </select>
+      </div>
+      <div class="col-md-1">
+          <button class="btn btn-primary w-100">
+              <i class="bi bi-search"></i>
+          </button>
+      </div>
+  </div>
+
+  <table class="table table-striped">
+      <thead class="table-dark">
+          <tr>
+              <th>#</th>
+              <th>คอลัมน์ 1</th>
+              <th>คอลัมน์ 2</th>
+              <th>คอลัมน์ 3</th>
+              <th>คอลัมน์ 4</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr>
+              <td>1</td>
+              <td>ข้อมูล 1</td>
+              <td>ข้อมูล 2</td>
+              <td>ข้อมูล 3</td>
+              <td>ข้อมูล 4</td>
+          </tr>
+          <tr>
+              <td>2</td>
+              <td>ข้อมูล A</td>
+              <td>ข้อมูล B</td>
+              <td>ข้อมูล C</td>
+              <td>ข้อมูล D</td>
+          </tr>
+      </tbody>
+  </table>
+</div>
+{% endblock %}
