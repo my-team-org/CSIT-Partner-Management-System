@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>รีวิวบริษัทฝึกงาน</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .navbar .btn-menu {
+            background-color: #ffcc00;
+            border-radius: 50%;
+            padding: 10px;
+            width: 40px;
+            height: 40px;
+        }
+
+        .navbar {
+            position: relative;
+        }
+
+        .nav-menu {
+            display: none;
+            position: absolute;
+            right: 20px;
+            top: 60px;
+            background: white;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            padding: 10px;
+            min-width: 150px;
+            text-align: left;
+            z-index: 1000;
+        }
+
+        .nav-menu.show {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: calc(100% - 20px);
+            /* ลดขนาดลงจาก 100% นิดหน่อย */
+            padding: 10px;
+            /* เพิ่ม padding ให้มีพื้นที่ว่างด้านใน */
+            margin-bottom: 10px;
+            /* เพิ่มระยะห่างระหว่างกรอบ */
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #28a745;
+            outline: none;
+        }
+
+        .star-rating {
+            display: flex;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .star-rating span {
+            font-size: 1.5rem;
+            color: #ccc;
+            transition: color 0.3s, transform 0.3s;
+        }
+
+        .star-rating span.active,
+        .star-rating span:hover,
+        .star-rating span:hover~span {
+            color: #ffd700;
+            transform: scale(1.2);
+        }
+
+        button {
+            display: block;
+            /* ทำให้ปุ่มเป็นบล็อกเพื่อควบคุมความกว้าง */
+            margin: 20px auto;
+            /* จัดกึ่งกลาง */
+            padding: 10px 50px;
+            /* ขยายขนาดปุ่ม */
+            font-size: 16px;
+            /* ขนาดตัวอักษร */
+            background-color: #4caf50;
+            /* สีพื้นหลัง */
+            color: white;
+            /* สีตัวอักษร */
+            border: none;
+            /* ไม่มีเส้นขอบ */
+            border-radius: 8px;
+            /* มุมโค้งมน */
+            cursor: pointer;
+            /* เปลี่ยนเมาส์เป็นรูปมือ */
+            width: 50%;
+            /* ขยายความกว้างของปุ่ม (ปรับได้) */
+            max-width: 400px;
+            /* จำกัดความกว้างสูงสุด */
+            text-align: center;
+            /* จัดข้อความไว้กลางปุ่ม */
+        }
+
+        button:hover {
+            background-color: #45a049;
+            /* เปลี่ยนสีเมื่อ hover */
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-light bg-white p-3">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="img/logo.png" alt="Logo" width="100" height="100">
+            </a>
+            <div>
+                <a href="#" class="me-3 text-dark"><i class="fas fa-sign-in-alt"></i> Login</a>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <h2><i class="fas fa-pencil-alt"></i> เขียนรีวิวบริษัทฝึกงาน</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label><i class="fas fa-building"></i> ชื่อบริษัทที่ฝึกงาน</label>
+                {{ form.company }}
+            </div>
+            <div class="form-group">
+                <label><i class="fas fa-thumbs-up"></i> คุณจะแนะนำบริษัทนี้ให้กับผู้อื่นหรือไม่?</label>
+                {{ form.recommend }}
+            </div>
+            <div class="form-group">
+                <label><i class="fas fa-star"></i> คะแนนความพึงพอใจโดยรวม</label>
+                <div class="star-rating" data-rating="0" data-input-id="id_overall_rating">
+                    <span data-value="1">★</span>
+                    <span data-value="2">★</span>
+                    <span data-value="3">★</span>
+                    <span data-value="4">★</span>
+                    <span data-value="5">★</span>
+                </div>
+                {{ form.overall_rating }}
+            </div>
+            <div class="form-group">
+                <label><i class="fas fa-gift"></i> คะแนนสวัสดิการและผลประโยชน์</label>
+                <div class="star-rating" data-rating="0" data-input-id="id_benefits_rating">
+                    <span data-value="1">★</span>
+                    <span data-value="2">★</span>
+                    <span data-value="3">★</span>
+                    <span data-value="4">★</span>
+                    <span data-value="5">★</span>
+                </div>
+                {{ form.benefits_rating }}
+            </div>
+            <div class="form-group">
+                <label><i class="fas fa-users"></i> คะแนนบรรยากาศของที่ทำงาน</label>
+                <div class="star-rating" data-rating="0" data-input-id="id_environment_rating">
+                    <span data-value="1">★</span>
+                    <span data-value="2">★</span>
+                    <span data-value="3">★</span>
+                    <span data-value="4">★</span>
+                    <span data-value="5">★</span>
+                </div>
+                {{ form.environment_rating }}
+            </div>
+            <div class="form-group">
+                <label><i class="fas fa-chart-line"></i> คะแนนการบริหารจัดการองค์กร</label>
+                <div class="star-rating" data-rating="0" data-input-id="id_management_rating">
+                    <span data-value="1">★</span>
+                    <span data-value="2">★</span>
+                    <span data-value="3">★</span>
+                    <span data-value="4">★</span>
+                    <span data-value="5">★</span>
+                </div>
+                {{ form.management_rating }}
+            </div>
+            <div class="form-group">
+                <label><i class="fas fa-briefcase"></i> ประเภทงานที่ฝึก</label>
+                {{ form.job_type }}
+                <input type="text" id="otherJobTypeInput" placeholder="ระบุประเภทงาน" style="display:none; margin-top: 10px;">
+            </div>
+            <div class="form-group">
+                <label><i class="fas fa-tasks"></i> หน้าที่ที่ได้รับมอบหมาย</label>
+                {{ form.job_description }}
+            </div>
+            <div class="form-group">
+                <label><i class="fas fa-book"></i> ประสบการณ์ที่คุณได้รับจากบริษัทนี้</label>
+                {{ form.experience }}
+            </div>
+            <div class="form-group">
+                <label><i class="fas fa-lightbulb"></i> คำแนะนำที่อยากให้กับผู้ฝึกงานรุ่นถัดไป</label>
+                {{ form.advice }}
+            </div>
+            <button type="submit"><i class="fas fa-paper-plane"></i> ส่งรีวิว</button>
+        </form>
+        <h2><i class="fas fa-list"></i> รีวิวของฉัน</h2>
+        <ul>
+            {% for review in reviews %}
+                <li>{{ review.company.name }} - {{ review.overall_rating }} ดาว</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <script>
+        function toggleOtherJobTypeInput() {
+            const jobTypeSelect = document.getElementById('id_job_type');
+            const otherJobTypeInput = document.getElementById('otherJobTypeInput');
+            if (jobTypeSelect.value === 'อื่นๆ') {
+                otherJobTypeInput.style.display = 'block';
+            } else {
+                otherJobTypeInput.style.display = 'none';
+            }
+        }
+
+        document.getElementById('id_job_type').addEventListener('change', toggleOtherJobTypeInput);
+
+        document.querySelectorAll('.star-rating span').forEach(span => {
+            span.addEventListener('mouseover', function () {
+                const rating = this.dataset.value;
+                const stars = this.parentNode.querySelectorAll('span');
+                stars.forEach(star => {
+                    star.style.color = star.dataset.value <= rating ? '#ffd700' : '#ccc';
+                    star.style.transform = star.dataset.value <= rating ? 'scale(1.2)' : 'scale(1)';
+                });
+            });
+
+            span.addEventListener('mouseout', function () {
+                const starRating = this.parentNode;
+                const rating = starRating.dataset.rating || 0;
+                updateStars(starRating);
+            });
+
+            span.addEventListener('click', function () {
+                const rating = this.dataset.value;
+                const starRating = this.parentNode;
+                starRating.dataset.rating = rating;
+                updateStars(starRating);
+                document.getElementById(starRating.dataset.inputId).value = rating;
+            });
+        });
+
+        function updateStars(starRating) {
+            const rating = starRating.dataset.rating || 0;
+            const stars = starRating.querySelectorAll('span');
+            stars.forEach(star => {
+                star.style.color = star.dataset.value <= rating ? '#ffd700' : '#ccc';
+            });
+        }
+    </script>
+</body>
+
+</html>
