@@ -1,0 +1,33 @@
+{% extends 'main/base.html' %}
+
+{% load static %}
+
+{% block title %}CSIT Co-Op{% endblock %}
+
+{% block styleCustom %}
+    <style>
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="header">
+        <h1><span>CS</span><span>IT</span> Partner Management System</h1>
+        <p>เว็บสำหรับค้นหาสถานประกอบการ ตำแหน่งงาน<br>และจัดทำเอกสารการสมัครงาน</p>
+    </div>
+    <div class="container"style="width:35%;">
+        <div class="card-container">
+                <div class="card">
+                    <div class="icon">🔍</div>
+                    <p>ค้นหาสถานประกอบการ</p>
+                </div>
+                <div class="card">
+                    <div class="icon">📄</div>
+                    <p></p>
+                </div>
+                <div class="card">
+                    <div class="icon">📄</div>
+                    <p>เอกสาร</p>
+                </div>
+        </div>
+    </div>
+{% endblock %}
