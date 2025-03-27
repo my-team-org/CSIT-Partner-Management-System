@@ -11,16 +11,12 @@ def index(request):
     start_date = request.GET.get('start_date' , None)
     end_date = request.GET.get('end_date', None)
     student_id = request.GET.get('student_id', None)
-
     if start_date:
         applications = applications.filter(pdf_date__gte=start_date)  # กรองวันที่เริ่มต้น
-    
     if end_date:
         applications = applications.filter(pdf_date__lte=end_date)  # กรองวันที่สิ้นสุด
-
     if student_id:
         applications = applications.filter(student__student_id__icontains=student_id)
-
     content = {'applications': applications}
     return render(request, 'index.html' , content)
 
@@ -36,7 +32,6 @@ def admin_check(request , application_id):
         elif action == 'reject':
             application_instance.comment = reason
             application_instance.status = 'rejected'
-
         # Save the updated application instance
         application_instance.save()
         return redirect('index')

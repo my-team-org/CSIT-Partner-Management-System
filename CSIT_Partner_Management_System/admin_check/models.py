@@ -198,6 +198,7 @@ class application_forms(models.Model):
     
     def __str__(self):
         return self.id
+    
 class Review(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     recommend = models.BooleanField()
