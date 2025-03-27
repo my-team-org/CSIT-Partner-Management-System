@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="utf-8">
+        <!--<meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+        <title></title>
+        <meta content="" name="keywords">
+        <meta content="" name="description">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {% load static %}
+        <link rel="stylesheet" href="{% static '../static/css/style.css' %}" defer>
+</head>
+<body>
+    <header>
+        <div class="logo"> 
+                <img src="{% static 'images/Logo.png' %}" alt="Logo">
+            </div>
+            <nav class="navbar navbar-light bg-white p-3">
+                <div class="container">
+                    <div>
+                        <a href="#" class="me-3 text-dark">Login</a>
+                    </div>
+                </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1>รายละเอียดตำแหน่งงาน</h1>
+            <div class="card">
+                {% if company_img and company_img.image %}
+                    <img src="{{ company_img.image.url }}" alt="Company Building">
+                {% else %}
+                    <p>ไม่มีรูปภาพบริษัท</p>
+                {% endif %}
+                <h2>บริษัท {{company.name_en}}</h2>
+
+                <div class="job-info">
+                    <p><strong>ตำแหน่ง:</strong> {{ job.job_name.job_type }}</p>
+                    <p><strong>จำนวนที่เปิดรับสมัคร:</strong> {{ job.job_quantity }}</p>
+                    <p><strong>รายละเอียดงาน:</strong> {{ job.job_description }}</p>
+                    <p><strong>ทักษะที่ต้องการ:</strong> {{ job.job_skill }}</p>
+                    <p><strong>สถานะ:</strong> {{ job.get_job_status_display }}</p>
+                    <p><strong>วันที่ประกาศ:</strong> {{ job.job_posted }}</p>
+                    <p><strong>วันที่ปรับปรุงล่าสุด:</strong> {{ job.job_updated }}</p>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

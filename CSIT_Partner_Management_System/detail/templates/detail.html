@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <!--<meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+        <title></title>
+        <meta content="" name="keywords">
+        <meta content="" name="description">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {% load static %}
+        <link rel="stylesheet" href="{% static '../static/css/style.css' %}" defer>
+    </head>
+    <body>
+        <header>
+            <div class="logo"> 
+                <img src="{% static 'images/Logo.png' %}" alt="Logo">
+            </div>
+            <nav class="navbar navbar-light bg-white p-3">
+                <div class="container">
+                    <div>
+                        <a href="#" class="me-3 text-dark">Login</a>
+                    </div>
+                </div>
+        </nav>
+        </header>
+        <h1>ข้อมูลสถานประกอบการ</h1>
+        <main>
+            <section class="company-info">
+                {% if company_img and company_img.image %}
+                    <img src="{{ company_img.image.url }}" alt="Company Building">
+                {% else %}
+                    <p>ไม่มีรูปภาพบริษัท</p>
+                {% endif %}
+                <h2>บริษัท {{company.name_en}}</h2>
+
+                <div class="info-section">
+                    <div class="info-box" align="left">
+                        <h3>ข้อมูลทั่วไปบริษัท</h3>
+                        <p><strong>ชื่อบริษัท (ภาษาไทย):</strong> {{company.name_th}}</p>
+                        <p><strong>ชื่อบริษัท (ภาษาอังกฤษ):</strong> {{company.name_en}}</p>
+                        <p><strong>E-mail:</strong> {{company.email}}</p>
+                        <p><strong>Website:</strong> {{company.website}}</p>
+                        <p><strong>แนะนำบริษัท:</strong> {{company.description}}</p>
+                    </div>
+
+                    <div class="info-box" align="left">
+                        <h3>ข้อมูลที่ตั้งบริษัท</h3>
+                        <p><strong>เลขที่:</strong> {{company.address_no}}</p>
+                        <p><strong>หมู่ที่:</strong> {{company.address_moo}}</p>
+                        <p><strong>จังหวัด:</strong> {{company.province}}</p>
+                        <p><strong>ถนน:</strong> {{company.address_road}}</p>
+                        <p><strong>ซอบ:</strong> {{company.address_soi}}</p>
+                        <p><strong>อำเภอ:</strong> {{company.district}}</p>
+                        <p><strong>ตำบล:</strong> {{company.subdistrict}}</p>
+                        <p><strong>รหัสไปรษณีย์:</strong> {{company.postal_code}}</p>
+                    </div>
+
+                    <div class="info-box" align="left">
+                        <h3>ข้อมูลผู้ประสานงาน</h3>
+                        <p><strong>ชื่อผู้ประสานงาน:</strong> {{hr.contact_name}}</p>
+                        <p><strong>ตำแหน่ง:</strong> {{hr.contact_position}}</p>
+                        <p><strong>แผนก/หน่วย/ฝ่าย:</strong> {{hr.contact_department}}</p>
+                        <p><strong>E-mail:</strong> {{hr.contact_email}}</p>
+                        <p><strong>โทรศัพท์:</strong> {{hr.contact_phone}}</p>
+                    </div>
+                </div>
+
+                <div class="job-section">
+                    <h3>ข้อมูลตำแหน่งงานที่เกี่ยวข้อง</h3>
+                    {% for job in jobs %}
+                        <p>
+                            <strong>ตำแหน่ง:</strong> {{ job.job_name.job_type }} 
+                            <a href="{% url 'job_info' job_id=job.job_id %}">รายละเอียด</a>
+                        </p>
+                        <p><strong>จำนวนที่เปิดรับสมัคร:</strong> {{ job.job_quantity }}</p>
+                        <!--<p><strong>รายละเอียดงาน:</strong> {{ job.job_description }}</p>
+                        <p><strong>ทักษะที่ต้องการ:</strong> {{ job.job_skill }}</p>-->
+                        <p><strong>สถานะ:</strong> {{ job.get_job_status_display }}</p>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <section class="reviews">
+                <h2>รีวิว</h2><!--loop ตรงนี้-->
+                <div class="review">
+                    <div class="user-icon">👤<!--{{review.student.studentname_th}}--></div>
+                    <div class="review-content">
+                        <p>DD/MM/YEAR<!--{{review.review_date}}--></p>
+                        <p>..........................<!--{{review.review_text}}--></p>
+                    </div>
+                </div>
+                <div class="review">
+                    <div class="user-icon">👤</div>
+                    <div class="review-content">
+                        <p>DD/MM/YEAR</p>
+                        <p>..........................</p>
+                    </div>
+                </div>
+                <div class="review">
+                    <div class="user-icon">👤</div>
+                    <div class="review-content">
+                        <p>DD/MM/YEAR</p>
+                        <p>..........................</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </body>
+</html>
