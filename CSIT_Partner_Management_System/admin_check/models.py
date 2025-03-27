@@ -178,7 +178,7 @@ class Student(models.Model):
     soldier = models.CharField(max_length=50, choices= SOLDIER_CHOICES,verbose_name="สถานะทหาร")
         
     def __str__(self):
-        return self.name
+        return self.student_id
     
 class Student_job(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, verbose_name="นิสิต")
@@ -190,10 +190,14 @@ class Student_job(models.Model):
     
 class application_forms(models.Model):
     id = models.AutoField(primary_key=True)
-    student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
     pdf_date = models.DateField()
     pdf_file = models.FileField(upload_to='media/pdfs/')
+    status = models.CharField(max_length=20, choices=[('pending', 'รอการตรวจสอบ'), ('approved', 'อนุมัติ'), ('rejected', 'ปฏิเสธ')], default='pending')
+    comment = models.CharField(max_length=255, blank=True , null=True)
     
+    def __str__(self):
+        return self.id
 class Review(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     recommend = models.BooleanField()
