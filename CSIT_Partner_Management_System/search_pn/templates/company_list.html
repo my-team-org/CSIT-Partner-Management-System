@@ -1,0 +1,200 @@
+{% block link %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+{% endblock %}
+
+{% block styleCustom %}
+    <style>
+        /* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f8f8;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center; /* จัดกึ่งกลางแนวนอน */
+}
+h2 {
+    text-align: center;
+    margin: 20px 0;
+    color: black;
+}
+
+/* Search Form */
+.search-form {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px auto;
+    max-width: 800px;
+    width: 100%;
+    padding: 10px;
+}
+
+.search-input {
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 50px;
+    border: 1px solid #ccc;
+    flex: 1;
+}
+
+.search-btn {
+    background-color: #FFC145;
+    color: black;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 50px;
+    font-size: 16px;
+}
+
+.search-btn:hover {
+    background-color: #FFC145;
+}
+
+/* Company List */
+.company-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    list-style-type: none;
+    justify-content: center;
+}
+
+.company-item {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    text-align: center;
+}
+
+.company-item:hover {
+    transform: scale(1.05);
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 15px;
+}
+
+.card-image {
+    border-radius: 10px ;
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+    background-color: #ddd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.company-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.card-content {
+    text-align: left;
+}
+
+.card-content h3 {
+    margin: 10px 0;
+    color: black;
+}
+
+.card-content p {
+    font-size: 14px;
+    color: #555;
+}
+
+/* Button */
+.details-btn {
+    background-color: #FFC145;
+    color: black;
+    border: none;
+    padding: 8px 15px;
+    cursor: pointer;
+    border-radius: 50px;
+    margin-top: 10px;
+}
+
+.details-btn:hover {
+    background-color: #FFC145;
+}
+.container {
+    width: 80%; /* กำหนดความกว้าง */
+    max-width: 1200px; /* ไม่ให้กว้างเกินไป */
+    margin: 20px auto; /* จัดให้อยู่กึ่งกลาง */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .search-form {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .search-input {
+        width: 100%;
+    }
+
+    .company-list {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+
+    .card-content h3 {
+        font-size: 16px;
+    }
+}
+
+    </style>
+{% endblock %}
+
+
+<div class="container">
+<h2>ค้นหาข้อมูลสถานประกอบการ</h2>
+
+<!-- ฟอร์มค้นหา -->
+<form method="GET" class="search-form" id="search-form">
+    <input type="text" id="company_name" name="company_name" placeholder="ค้นหาชื่อบริษัท" class="search-input">
+    <input type="text" id="province" name="province" placeholder="ค้นหาจังหวัด" class="search-input">
+    <input type="text" id="job_name" name="job_name" placeholder="ค้นหาตำแหน่งงาน" class="search-input">
+    <button type="submit" class="search-btn"><i class="bi bi-search"></i> ค้นหา</button>
+</form>
+<!-- รายการบริษัท -->
+<ul class="company-list" id="company-list">
+    {% for company in companies %}
+        <li class="company-item">
+            <div class="card">
+                <div class="card-image">
+                    {% if company.logo %}
+                        <img src="{{ company.logo.url }}" alt="บริษัท" class="company-img">
+                    {% else %}
+                        <p>ไม่มีภาพสำหรับบริษัทนี้</p>
+                    {% endif %}
+                </div>
+                <div class="card-content">
+                    <h3>{{ company.name_th }}</h3>
+                    <p><strong>ชื่อบริษัท (อังกฤษ) :</strong> {{ company.name_en }}</p>
+                    <p><strong>จังหวัด :</strong> {{ company.province }}</p>
+                    <p><strong>ตำแหน่งงาน:</strong>
+                    {% for job in company.job_set.all %}
+                        <p>{{ job.job_name.job_type }}</p>
+                    {% empty %}
+                        <p>ไม่มีตำแหน่งงานที่เปิดรับสมัคร</p>
+                    {% endfor %}
+                    </p>
+                    <button class="details-btn">รายละเอียด </button> <i class="bi bi-person-heart"> Partner </i>
+                </div>
+            </div>
+        </li>
+    {% endfor %}
+</ul>
+</div>
