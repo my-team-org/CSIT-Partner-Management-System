@@ -1,11 +1,11 @@
 from django import forms
-from .models import Company, Student
+from .models import *
 
 # Company Form
 class CompanyForm(forms.ModelForm):
     class Meta:
         model = Company
-        fields = '__all__'
+        fields = ['name_th', 'name_en', 'email', 'website', 'company_type', 'description', 'head_name', 'head_position', 'address_no', 'address_moo', 'address_building', 'address_soi', 'address_road', 'province', 'district', 'subdistrict', 'postal_code', 'phone']
         widgets = {
             # ข้อมูลทั่วไป
             'name_th': forms.TextInput(attrs={
@@ -32,6 +32,7 @@ class CompanyForm(forms.ModelForm):
                 'class': 'form-control', 
                 'placeholder': 'กรอกคำอธิบายเกี่ยวกับบริษัท'
             }),
+            
             # ข้อมูลหัวหน้าหน่วยงาน/ผู้จัดการสถานประกอบการ
             'head_name': forms.TextInput(attrs={
                 'class': 'form-control', 
@@ -82,6 +83,14 @@ class CompanyForm(forms.ModelForm):
                 'class': 'form-control', 
                 'placeholder': 'กรอกโทรศัพท์หน่วยงาน'
             }),
+        }
+
+# HumanResouce Form
+class HumanResouceForm(forms.ModelForm):
+    class Meta:
+        model = HumanResouce
+        fields = ['contact_name', 'contact_position', 'contact_department', 'contact_email', 'contact_phone']
+        widgets = {
             # ข้อมูลผู้ประสานงาน
             'contact_name': forms.TextInput(attrs={
                 'class': 'form-control', 
@@ -103,12 +112,26 @@ class CompanyForm(forms.ModelForm):
                 'class': 'form-control', 
                 'placeholder': 'กรอกโทรศัพท์ผู้ประสานงาน'
             }),
+        }
+
+# HumnanResource_Job Form
+class HumanResourceJobForm(forms.ModelForm):
+    class Meta:
+        model = HumnanResource_Job
+        fields = '__all__'
+
+# Job Form
+class JobForm(forms.ModelForm):
+    class Meta:
+        model = Job
+        fields = 'job_name', 'job_department', 'job_description', 'job_skill', 'job_welfare_benefit'
+        widgets = {
             # ข้อมูลตำแหน่งงาน
-            'job_title': forms.TextInput(attrs={
+            'job_name': forms.Select(attrs={
                 'class': 'form-control', 
                 'placeholder': 'กรอกตำแหน่งงาน'
             }),
-            'related_field': forms.TextInput(attrs={
+            'job_department': forms.TextInput(attrs={
                 'class': 'form-control', 
                 'placeholder': 'กรอกสาขาวิชาที่เกี่ยวข้อง'
             }),
@@ -117,13 +140,12 @@ class CompanyForm(forms.ModelForm):
                 'class': 'form-control', 
                 'placeholder': 'กรอกรายละเอียดตำแหน่งงาน'
             }),
-            'required_skills': forms.Textarea(attrs={
+            'job_skill': forms.Textarea(attrs={
                 'rows': 3, 
                 'class': 'form-control', 
                 'placeholder': 'กรอกทักษะพิเศษที่ต้องการ'
             }),
-            'benefits': forms.Textarea(attrs={
-                'rows': 3, 
+            'job_welfare_benefit': forms.Select(attrs={
                 'class': 'form-control', 
                 'placeholder': 'กรอกสวัสดิการ'
             }),
@@ -133,7 +155,12 @@ class CompanyForm(forms.ModelForm):
 class StudentForm(forms.ModelForm):
     class Meta:
         model = Student
-        fields = '__all__'
+        fields = ['name','student_id','field_of_study','year','advisor','academic_year','semester',
+                  'gpa_term','gpa_total','internship_start_date','internship_end_date','id_card',
+                  'id_card_issue_date','id_card_expiry_date','national','citizenship','religion',
+                  'gender','height','weight','disease','address','mobile_phone','email',
+                  'emergency_contact','relationship','emergency_phone','photo','resume','transcript','activity_transcript','soldier'
+                  ]
         widgets = {
             # ข้อมูลส่วนตัวนิสิต
             'name': forms.TextInput(attrs={

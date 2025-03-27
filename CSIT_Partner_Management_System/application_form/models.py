@@ -1,4 +1,41 @@
 from django.db import models
+from django.contrib.auth.models import User
+
+class JobPosition(models.Model):
+    job_type = models.CharField(max_length=50, verbose_name="ตำแหน่งงาน")  # ชื่อของตำแหน่งงาน
+
+    def __str__(self):
+        return self.job_type
+
+class Jobbenefit(models.Model):
+    saraly = models.CharField(max_length=50, verbose_name="เงินเดือน")  # เงินเดือน
+    lunch = models.CharField(max_length=50, verbose_name="อาหารกลางวัน")  # อาหารกลางวัน
+    delivery = models.CharField(max_length=50, verbose_name="รถรับ-ส่ง")  # รถรับ-ส่ง
+    # สวัสดิการอื่นๆ
+
+    def __str__(self):
+        return f"{self.saraly}, {self.lunch}, {self.delivery}"
+
+class Job(models.Model):
+    TYPE_CHOICES_STATUS = [
+        ('open', 'เปิดรับสมัคร'),
+        ('closed', 'ปิดรับสมัคร'),
+    ]
+
+    job_id = models.AutoField(primary_key=True)  # ใช้ AutoField เพื่อให้สร้าง ID อัตโนมัติ
+    job_name = models.ForeignKey(JobPosition, on_delete=models.CASCADE, verbose_name="ชื่อตำแหน่งงาน")  # ชื่อตำแหน่งงาน
+    job_posted = models.DateTimeField(auto_now_add=True, verbose_name="วันที่ประกาศงาน")  # วันที่ประกาศงาน
+    job_updated = models.DateTimeField(auto_now=True, verbose_name="วันที่ปรับปรุงข้อมูล", null=True)  # วันที่ปรับปรุงข้อมูล
+    job_quantity = models.IntegerField(verbose_name="จำนวนที่เปิดรับสมัคร")  # จำนวนที่เปิดรับสมัคร
+    job_description = models.TextField(verbose_name="รายละเอียดงาน")  # รายละเอียดงาน
+    job_skill = models.TextField(verbose_name="ทักษะที่ต้องการ")  # ทักษะที่ต้องการ
+    job_department = models.CharField(max_length=255, verbose_name="สาขาวิชา")  # แผนกที่เกี่ยวข้อง
+    job_welfare_benefit = models.ForeignKey(Jobbenefit, on_delete=models.CASCADE, verbose_name="สวัสดิการ")  # สวัสดิการ
+    job_file = models.FileField(upload_to='uploads/', verbose_name="ไฟล์แนบ")  # ไฟล์แนบ
+    job_status = models.CharField(max_length=50, choices=TYPE_CHOICES_STATUS, verbose_name="สถานะ")
+
+    def __str__(self):
+        return str(self.job_name)
 
 # Company Model
 class Company(models.Model):
@@ -6,6 +43,11 @@ class Company(models.Model):
         ('public', 'รัฐวิสาหกิจ'),
         ('private', 'เอกชน'),
         ('government', 'ราชการ'),
+    ]
+
+    TYPE_CHOICES_COMPANY = [
+        ('partner', 'พาร์ทเนอร์'),
+        ('no-partner', 'ไม่ใช่พาร์ทเนอร์'),
     ]
 
     name_th = models.CharField(max_length=255, verbose_name="ชื่อหน่วยงาน (ไทย)")
@@ -28,21 +70,38 @@ class Company(models.Model):
     subdistrict = models.CharField(max_length=100, verbose_name="ตำบล")
     postal_code = models.CharField(max_length=10, verbose_name="รหัสไปรษณีย์")
     phone = models.CharField(max_length=20, verbose_name="โทรศัพท์")
+    company_type = models.CharField(max_length=50, choices=TYPE_CHOICES_COMPANY, verbose_name="ประเภทบริษัท")
+    company_file = models.FileField(upload_to='uploads/', verbose_name="ไฟล์แนบ")
+    company_date_add = models.DateTimeField(auto_now_add=True, verbose_name="วันที่เพิ่มข้อมูลบริษัท")
 
+    def __str__(self):
+        return self.name_th
+
+class Company_image(models.Model):
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, verbose_name="ชื่อหน่วยงาน")
+    image = models.ImageField(upload_to='static/images/', null=True, blank=True)
+
+    def __str__(self):
+        return self.company.name_th
+
+class HumanResouce(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="ผู้ใช้งาน")
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, verbose_name="หน่วยงาน")
     contact_name = models.CharField(max_length=255, verbose_name="ชื่อผู้ประสานงาน")
     contact_position = models.CharField(max_length=100, verbose_name="ตำแหน่ง")
     contact_department = models.CharField(max_length=100, verbose_name="แผนก/หน่วย/ฝ่าย")
     contact_email = models.EmailField(verbose_name="E-mail ผู้ประสานงาน")
     contact_phone = models.CharField(max_length=20, verbose_name="โทรศัพท์ผู้ประสานงาน")
 
-    job_title = models.CharField(max_length=100, verbose_name="ตำแหน่งงาน")
-    related_field = models.CharField(max_length=255, verbose_name="สาขาวิชาที่เกี่ยวข้อง")
-    job_description = models.TextField(verbose_name="รายละเอียดตำแหน่งงาน")
-    required_skills = models.TextField(verbose_name="ทักษะพิเศษ")
-    benefits = models.TextField(verbose_name="สวัสดิการ")
+    def __str__(self):
+        return self.contact_name
+
+class HumnanResource_Job(models.Model):
+    HumanResouce = models.ForeignKey(HumanResouce, on_delete=models.CASCADE, verbose_name="ผู้ประสานงาน")
+    Job = models.ForeignKey(Job, on_delete=models.CASCADE, verbose_name="ตำแหน่งงาน")
 
     def __str__(self):
-        return self.name_th
+        return self.HumanResouce.contact_name
 
 # Student Model
 class Student(models.Model):
@@ -57,6 +116,13 @@ class Student(models.Model):
         ('2', '2'),
     ]
 
+    SOLDIER_CHOICES =[
+        ('ผ่านการเกณฑ์ทหาร', 'ผ่านการเกณฑ์ทหาร'),
+        ('ยังไม่ผ่านการเกณฑ์ทหาร', 'ยังไม่ผ่านการเกณฑ์ทหาร'),
+        ('ได้รับการยกเว้น', 'ได้รับการยกเว้น'),
+    ]
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="ผู้ใช้งาน")
     name = models.CharField(max_length=255, verbose_name="ชื่อนิสิต")
     student_id = models.CharField(max_length=20, verbose_name="รหัสนิสิต")
     field_of_study = models.CharField(max_length=255, verbose_name="สาขาวิชา")
@@ -88,6 +154,36 @@ class Student(models.Model):
     resume = models.FileField(upload_to='uploads/', verbose_name="Resume")
     transcript = models.FileField(upload_to='uploads/', verbose_name="Transcript")
     activity_transcript = models.FileField(upload_to='uploads/', verbose_name="Activity Transcript")
+    soldier = models.CharField(max_length=50, choices= SOLDIER_CHOICES,verbose_name="สถานะทหาร")
 
     def __str__(self):
         return self.name
+
+class Student_job(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, verbose_name="นิสิต")
+    job = models.ForeignKey(Job, on_delete=models.CASCADE, verbose_name="ตำแหน่งงาน")
+
+    def __str__(self):
+        return self.student.name
+
+class application_forms(models.Model):
+    id = models.AutoField(primary_key=True)
+    user_id = models.IntegerField()
+    pdf_date = models.DateField()
+    file = models.FileField(upload_to='media/pdfs/')
+
+class Review(models.Model):
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    recommend = models.BooleanField()
+    overall_rating = models.IntegerField()
+    benefits_rating = models.IntegerField()
+    environment_rating = models.IntegerField()
+    management_rating = models.IntegerField()
+    job_type = models.CharField(max_length=255)
+    job_description = models.TextField()
+    experience = models.TextField()
+    advice = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Review for {self.company.name}'
