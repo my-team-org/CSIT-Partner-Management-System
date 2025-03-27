@@ -2,6 +2,7 @@
 <html lang="th">
 
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>รีวิวบริษัทฝึกงาน</title>
@@ -42,6 +43,7 @@
             padding: 10px;
             width: 40px;
             height: 40px;
+
         }
 
         .navbar {
@@ -66,6 +68,7 @@
             display: block;
         }
 
+
         .form-group {
             margin-bottom: 15px;
         }
@@ -80,11 +83,8 @@
         select,
         textarea {
             width: calc(100% - 20px);
-            /* ลดขนาดลงจาก 100% นิดหน่อย */
             padding: 10px;
-            /* เพิ่ม padding ให้มีพื้นที่ว่างด้านใน */
             margin-bottom: 10px;
-            /* เพิ่มระยะห่างระหว่างกรอบ */
             border: 1px solid #ddd;
             border-radius: 4px;
             resize: vertical;
@@ -93,7 +93,7 @@
         input:focus,
         select:focus,
         textarea:focus {
-            border-color: #28a745;
+            border-color: #FFC145;
             outline: none;
         }
 
@@ -118,49 +118,42 @@
 
         button {
             display: block;
-            /* ทำให้ปุ่มเป็นบล็อกเพื่อควบคุมความกว้าง */
             margin: 20px auto;
-            /* จัดกึ่งกลาง */
             padding: 10px 50px;
-            /* ขยายขนาดปุ่ม */
             font-size: 16px;
-            /* ขนาดตัวอักษร */
-            background-color: #4caf50;
-            /* สีพื้นหลัง */
+            background-color: #FFC145;
             color: white;
-            /* สีตัวอักษร */
             border: none;
-            /* ไม่มีเส้นขอบ */
             border-radius: 8px;
-            /* มุมโค้งมน */
             cursor: pointer;
-            /* เปลี่ยนเมาส์เป็นรูปมือ */
             width: 50%;
-            /* ขยายความกว้างของปุ่ม (ปรับได้) */
             max-width: 400px;
-            /* จำกัดความกว้างสูงสุด */
             text-align: center;
-            /* จัดข้อความไว้กลางปุ่ม */
         }
 
         button:hover {
-            background-color: #45a049;
-            /* เปลี่ยนสีเมื่อ hover */
+            background-color: #FFAE00;
         }
     </style>
 </head>
 
 <body>
+    <hearder>
     <nav class="navbar navbar-light bg-white p-3">
         <div class="container">
             <a class="navbar-brand" href="#">
-                <img src="img/logo.png" alt="Logo" width="100" height="100">
+                <img src="https://www.ghibli.jp/gallery/mimi007.jpg" alt="Logo" width="100" height="100">
             </a>
             <div>
-                <a href="#" class="me-3 text-dark"><i class="fas fa-sign-in-alt"></i> Login</a>
+                <a href="#" class="me-3 text-dark">Login</a>
             </div>
         </div>
     </nav>
+</hearder>
+
+
+
+
     <div class="container">
         <h2><i class="fas fa-pencil-alt"></i> เขียนรีวิวบริษัทฝึกงาน</h2>
         <form method="post">
@@ -219,8 +212,19 @@
             </div>
             <div class="form-group">
                 <label><i class="fas fa-briefcase"></i> ประเภทงานที่ฝึก</label>
+                <select class="review-select form-control">
+                    <option value="" selected disabled>กรุณาเลือกประเภทงาน</option>
+                    {% for jt in job_types %}
+                        <option value="{{ jt }}">{{ jt }}</option>
+                    {% endfor %}
+                    <option value="อื่นๆ">อื่นๆ</option>
+                </select>
+                
+                <textarea class="review-text form-control mt-2" rows="3" style="display: none;"
+                    placeholder="กรุณาระบุประเภทงานเพิ่มเติม"></textarea>
+
+                <!-- ตัวจริงที่ Django จะรับค่า -->
                 {{ form.job_type }}
-                <input type="text" id="otherJobTypeInput" placeholder="ระบุประเภทงาน" style="display:none; margin-top: 10px;">
             </div>
             <div class="form-group">
                 <label><i class="fas fa-tasks"></i> หน้าที่ที่ได้รับมอบหมาย</label>
@@ -236,26 +240,45 @@
             </div>
             <button type="submit"><i class="fas fa-paper-plane"></i> ส่งรีวิว</button>
         </form>
+
         <h2><i class="fas fa-list"></i> รีวิวของฉัน</h2>
         <ul>
             {% for review in reviews %}
-                <li>{{ review.company.name }} - {{ review.overall_rating }} ดาว</li>
+            <li>{{ review.company.name_th }} ({{ review.company.name_en }}) - {{ review.overall_rating }}
+                ดาว(คะแนนภาพรวม)</li>
             {% endfor %}
         </ul>
     </div>
 
     <script>
-        function toggleOtherJobTypeInput() {
-            const jobTypeSelect = document.getElementById('id_job_type');
-            const otherJobTypeInput = document.getElementById('otherJobTypeInput');
-            if (jobTypeSelect.value === 'อื่นๆ') {
-                otherJobTypeInput.style.display = 'block';
+        const form = document.querySelector("form");
+
+        const jobSelect = document.querySelector(".review-select");
+        const jobTextarea = document.querySelector(".review-text");
+        const jobHiddenInput = document.getElementById("id_job_type");
+
+        function toggleJobTypeInput() {
+            if (jobSelect.value === "อื่นๆ") {
+                jobTextarea.style.display = "block";
+                jobTextarea.required = true;
+                jobTextarea.value = "";
             } else {
-                otherJobTypeInput.style.display = 'none';
+                jobTextarea.style.display = "none";
+                jobTextarea.required = false;
+                jobTextarea.value = jobSelect.value;
             }
         }
 
-        document.getElementById('id_job_type').addEventListener('change', toggleOtherJobTypeInput);
+        jobSelect.addEventListener("change", toggleJobTypeInput);
+        window.addEventListener("DOMContentLoaded", toggleJobTypeInput);
+
+        form.addEventListener("submit", function () {
+            if (jobSelect.value === "อื่นๆ") {
+                jobHiddenInput.value = jobTextarea.value;
+            } else {
+                jobHiddenInput.value = jobSelect.value;
+            }
+        });
 
         document.querySelectorAll('.star-rating span').forEach(span => {
             span.addEventListener('mouseover', function () {
@@ -269,7 +292,6 @@
 
             span.addEventListener('mouseout', function () {
                 const starRating = this.parentNode;
-                const rating = starRating.dataset.rating || 0;
                 updateStars(starRating);
             });
 

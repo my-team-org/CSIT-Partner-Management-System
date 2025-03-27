@@ -76,8 +76,12 @@ WSGI_APPLICATION = 'CSIT_Partner_Management_System.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',  # ใช้ MySQL เป็นฐานข้อมูล
+        'NAME': 'csitcoop_db',  # ชื่อฐานข้อมูล
+        'USER': 'root',  # ชื่อผู้ใช้ MySQL
+        'PASSWORD': '12345678',  # รหัสผ่านของ MySQL
+        'HOST': 'localhost',  # ที่อยู่ของ MySQL server
+        'PORT': '3306',  # พอร์ตของ MySQL (พอร์ตเริ่มต้นคือ 3306)
     }
 }
 
