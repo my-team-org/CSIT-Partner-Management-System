@@ -1,0 +1,3 @@
+{% for job in jobs %}
+                    <p><strong>ตำแหน่ง:</strong> {{ job.job_name }} <a href="{% url 'job_info' job_id=job.job_id %}">รายละเอียด</a></p>
+ {% endfor %}

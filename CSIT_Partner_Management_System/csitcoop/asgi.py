@@ -1,5 +1,5 @@
 """
-ASGI config for CSIT_Partner_Management_System project.
+ASGI config for csitcoop project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'CSIT_Partner_Management_System.settings')
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "csitcoop.settings")
 
 application = get_asgi_application()

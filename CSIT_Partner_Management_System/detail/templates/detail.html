@@ -10,6 +10,23 @@
         {% load static %}
         <link rel="stylesheet" href="{% static '../static/css/style.css' %}" defer>
     </head>
+    <style>
+        .Title_header{
+            background-color: orange;
+            padding: 10px 20px;
+            width: 25%;
+            margin-left: 36%;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            margin: 2 auto;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .Title_header:hover {
+            transform: scale(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+    </style>
     <body>
         <header>
             <div class="logo"> 
@@ -23,11 +40,13 @@
                 </div>
         </nav>
         </header>
-        <h1>ข้อมูลสถานประกอบการ</h1>
+       
+            <h1 class="Title_header" >ข้อมูลสถานประกอบการ</h1>
+       
         <main>
             <section class="company-info">
                 {% if company_img and company_img.image %}
-                    <img src="{{ company_img.image.url }}" alt="Company Building">
+                    <img src="{{ company_img.image.url }} " alt="Company Building">
                 {% else %}
                     <p>ไม่มีรูปภาพบริษัท</p>
                 {% endif %}
@@ -35,7 +54,7 @@
 
                 <div class="info-section">
                     <div class="info-box" align="left">
-                        <h3>ข้อมูลทั่วไปบริษัท</h3>
+                        <h3 class="header_detail">ข้อมูลทั่วไปบริษัท</h3>
                         <p><strong>ชื่อบริษัท (ภาษาไทย):</strong> {{company.name_th}}</p>
                         <p><strong>ชื่อบริษัท (ภาษาอังกฤษ):</strong> {{company.name_en}}</p>
                         <p><strong>E-mail:</strong> {{company.email}}</p>
@@ -44,7 +63,7 @@
                     </div>
 
                     <div class="info-box" align="left">
-                        <h3>ข้อมูลที่ตั้งบริษัท</h3>
+                        <h3 class="header_detail">ข้อมูลที่ตั้งบริษัท</h3>
                         <p><strong>เลขที่:</strong> {{company.address_no}}</p>
                         <p><strong>หมู่ที่:</strong> {{company.address_moo}}</p>
                         <p><strong>จังหวัด:</strong> {{company.province}}</p>
@@ -56,7 +75,7 @@
                     </div>
 
                     <div class="info-box" align="left">
-                        <h3>ข้อมูลผู้ประสานงาน</h3>
+                        <h3 class="header_detail">ข้อมูลผู้ประสานงาน</h3>
                         <p><strong>ชื่อผู้ประสานงาน:</strong> {{hr.contact_name}}</p>
                         <p><strong>ตำแหน่ง:</strong> {{hr.contact_position}}</p>
                         <p><strong>แผนก/หน่วย/ฝ่าย:</strong> {{hr.contact_department}}</p>
@@ -64,45 +83,45 @@
                         <p><strong>โทรศัพท์:</strong> {{hr.contact_phone}}</p>
                     </div>
                 </div>
-
+                
                 <div class="job-section">
-                    <h3>ข้อมูลตำแหน่งงานที่เกี่ยวข้อง</h3>
+                    <h3 class="review_header">ข้อมูลตำแหน่งงานที่เกี่ยวข้อง</h3>
                     {% for job in jobs %}
                         <p>
                             <strong>ตำแหน่ง:</strong> {{ job.job_name.job_type }} 
-                            <a href="{% url 'job_info' job_id=job.job_id %}">รายละเอียด</a>
+                            <a href="{% url 'job_info' job_id=job.job_id %}" style=" text-decoration: none; color: #0066cc; ">รายละเอียด</a>
                         </p>
-                        <p><strong>จำนวนที่เปิดรับสมัคร:</strong> {{ job.job_quantity }}</p>
+                        <p><strong>จำนวนที่เปิดรับสมัคร :</strong> {{ job.job_quantity }}</p>
                         <!--<p><strong>รายละเอียดงาน:</strong> {{ job.job_description }}</p>
                         <p><strong>ทักษะที่ต้องการ:</strong> {{ job.job_skill }}</p>-->
                         <p><strong>สถานะ:</strong> {{ job.get_job_status_display }}</p>
+                        <hr>
                     {% endfor %}
                 </div>
             </section>
 
             <section class="reviews">
-                <h2>รีวิว</h2><!--loop ตรงนี้-->
-                <div class="review">
-                    <div class="user-icon">👤<!--{{review.student.studentname_th}}--></div>
-                    <div class="review-content">
-                        <p>DD/MM/YEAR<!--{{review.review_date}}--></p>
-                        <p>..........................<!--{{review.review_text}}--></p>
+                <h3 class="h_review">รีวิว</h3>
+            {% for review in reviews %}
+            <div class="review">
+                <div class="user-icon">👤</div>
+                <div class="review-content">
+                    <p><strong>วันที่รีวิว:</strong> {{ review.created_at|date:"d/m/Y" }}</p>
+                    <p><strong>แนะนำบริษัท:</strong> {{ review.recommend|yesno:"แนะนำ,ไม่แนะนำ" }}</p>
+                    <p><strong>คะแนนรวม:</strong> <span class="rating">{{ review.overall_rating }}/5</span></p>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <p><strong>สวัสดิการ:</strong> <span class="rating">{{ review.benefits_rating }}/5</span></p>
+                        <p><strong>สภาพแวดล้อม:</strong> <span class="rating">{{ review.environment_rating }}/5</span></p>
+                        <p><strong>การจัดการ:</strong> <span class="rating">{{ review.management_rating }}/5</span></p>
                     </div>
+                    <p><strong>ตำแหน่งงาน:</strong> {{ review.job_type }}</p>
+                    <p><strong>ประสบการณ์:</strong> {{ review.experience }}</p>
+                    <p><strong>คำแนะนำ:</strong> {{ review.advice }}</p>
                 </div>
-                <div class="review">
-                    <div class="user-icon">👤</div>
-                    <div class="review-content">
-                        <p>DD/MM/YEAR</p>
-                        <p>..........................</p>
-                    </div>
-                </div>
-                <div class="review">
-                    <div class="user-icon">👤</div>
-                    <div class="review-content">
-                        <p>DD/MM/YEAR</p>
-                        <p>..........................</p>
-                    </div>
-                </div>
+            </div>
+            {% empty %}
+            <p style="text-align: center; color: var(--gray-400); padding: 2rem 0;">ยังไม่มีรีวิวสำหรับบริษัทนี้</p>
+            {% endfor %}
             </section>
         </main>
     </body>

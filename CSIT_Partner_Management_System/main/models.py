@@ -91,7 +91,7 @@ class Company(models.Model):
     company_file = models.FileField(upload_to='uploads/', verbose_name="ไฟล์แนบ")
     
     company_date_add = models.DateTimeField(auto_now_add=True, verbose_name="วันที่เพิ่มข้อมูลบริษัท")
-
+    logo = models.ImageField(upload_to='uploads/', verbose_name="โลโก้หน่วยงาน")
     def __str__(self):
         return self.name_th
     
@@ -186,7 +186,7 @@ class Student_job(models.Model):
     
     
     def __str__(self):
-        return (self.student)
+        return self.student
     
 class application_forms(models.Model):
     id = models.AutoField(primary_key=True)

@@ -1,5 +1,5 @@
 """
-WSGI config for CSIT_Partner_Management_System project.
+WSGI config for csitcoop project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'CSIT_Partner_Management_System.settings')
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "csitcoop.settings")
 
 application = get_wsgi_application()

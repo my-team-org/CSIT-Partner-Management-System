@@ -14,5 +14,5 @@ def detail(request):
         "hr": hr,
         "hr_job": hr_job,
         "jobs": jobs,  # ส่งข้อมูล Job ไปยัง template
-        "reivews": reviews
+        "reviews": reviews  # แก้ไขจาก "reivews" เป็น "reviews"
     })
