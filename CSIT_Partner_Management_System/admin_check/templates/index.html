@@ -2,61 +2,107 @@
 {% load static %}
 {% block content %}
 <div class="container">
-  <div class="row g-2 mb-3">
-      <div class="col-md-3">
-          <select class="form-select">
-              <option selected>เลือกตัวกรอง 1</option>
-              <option value="1">ตัวเลือก 1</option>
-              <option value="2">ตัวเลือก 2</option>
-          </select>
-      </div>
-      <div class="col-md-3">
-          <select class="form-select">
-              <option selected>เลือกตัวกรอง 2</option>
-              <option value="1">ตัวเลือก A</option>
-              <option value="2">ตัวเลือก B</option>
-          </select>
-      </div>
-      <div class="col-md-3">
-          <select class="form-select">
-              <option selected>เลือกตัวกรอง 3</option>
-              <option value="1">ตัวเลือก X</option>
-              <option value="2">ตัวเลือก Y</option>
-          </select>
-      </div>
-      <div class="col-md-2">
-          <select class="form-select">
-              <option selected>เลือกตัวกรอง 4</option>
-              <option value="1">ตัวเลือก α</option>
-              <option value="2">ตัวเลือก β</option>
-          </select>
-      </div>
-      <div class="col-md-1">
-          <button class="btn btn-primary w-100">
-              <i class="bi bi-search"></i>
-          </button>
-      </div>
-  </div>
-
+    <form method = "GET">
+        <div class="row g-2 mb-3">
+            <div class="col-md-3">
+                <input type="date" name="start_date" class="form-control" value="{{ request.GET.start_date }}"> <!-- วันที่เริ่ม-->
+            </div>
+            <div class="col-md-3">
+                <input type="date" name="end_date" class="form-control" value="{{ request.GET.end_date }}"> <!-- วันสิ้นสุด-->
+            </div>
+            <div class="col-md-3">
+                <input type="text" name="student_id" class="form-control" placeholder="รหัสนิสิต" value="{{ request.GET.student_id }}"> <!-- รหัสนิสิต-->
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-primary w-100">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+            <div class="col-md-1">
+                <a href="{% url 'index' %}" class="btn btn-secondary w-100">
+                    <i class="bi bi-arrow-counterclockwise"></i>
+                </a>
+            </div>
+        </div>
+    </form>
   <table class="table table-striped">
       <thead class="table-dark">
           <tr>
               <th>#</th>
               <th>วันที่</th>
-              <th>บริษัท</th>
-              <th>ชื่อ</th>
-              <th>จัดการข้อมูล</th>
+              <th>รหัสนิสิต</th>
+              <th>ชื่อไฟล์</th>
+              <th>รายละเอียด</th>
           </tr>
       </thead>
       <tbody>
+        {% for application in applications %}
           <tr>
-              <td>1</td>
-              <td>ข้อมูล 1</td>
-              <td>ข้อมูล 2</td>
-              <td>ข้อมูล 3</td>
-              <td>ข้อมูล 4</td>
+              <td>{{application.id}}</td>
+              <td>{{application.pdf_date}}</td>
+              <td>{{application.student_id}}</td>
+              <td>{{application.pdf_file}}</td>
+              <td>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#pdfModal" 
+                data-student-id = {{application.student_id}} 
+                data-pdf-file = {{application.pdf_file}}>
+                    ShowPDFfile
+                </button>
           </tr>
+          {% endfor %}
       </tbody>
   </table>
 </div>
+<!-- modal-->
+    <div class="modal fade" id="pdfModal" tabindex="-1" aria-labelledby="pdfModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="pdfModalLabel">PDF Viewer</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Iframe แสดง PDF -->
+                    <iframe id="pdfViewer" src="yourfile.pdf" width="100%" height="500px"></iframe>
+                    <div class = "d-flex mx-2">
+                        <button id = "btnIncomplete" class = "btn btn-danger mx-2" style="width: 100%; margin-top: 10px;">
+                            ข้อมูลไม่ครบถ้วน
+                        </button>
+                        <button class = "btn btn-success mx-2" style="width: 100%; margin-top: 10px;">
+                            ข้อมูลถูกต้อง
+                        </button>
+                    </div>
+                    <!-- พื้นที่แสดง textarea (ซ่อนไว้ก่อน) -->
+                    <div id="reasonContainer" class="mt-3 mx-2" style="display: none;">
+                        <textarea id="reasonInput" class="form-control" placeholder="โปรดระบุเหตุผล..."></textarea>
+                        <button id="btnSubmitReason" class="btn btn-primary mt-2" style="width: 100%;">ส่งข้อมูล</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- ENDmodal-->
+<script>
+    document.getElementById("btnIncomplete").addEventListener("click", function () {
+        var reasonContainer = document.getElementById("reasonContainer");
+        reasonContainer.style.display = "block"; // แสดง textarea
+    });
+
+    document.getElementById("btnSubmitReason").addEventListener("click", function () {
+        var reason = document.getElementById("reasonInput").value;
+        if (reason.trim() === "") {
+            alert("กรุณากรอกเหตุผลก่อนส่งข้อมูล");
+        } else {
+            alert("ส่งข้อมูลสำเร็จ: " + reason);
+            document.getElementById("reasonContainer").style.display = "none"; // ซ่อน textarea หลังส่งข้อมูล
+            document.getElementById("reasonInput").value = ""; // เคลียร์ค่า input
+        }
+    });
+
+    // รีเซ็ต textarea เมื่อปิด Modal
+    document.getElementById("pdfModal").addEventListener("hidden.bs.modal", function () {
+        document.getElementById("reasonContainer").style.display = "none"; // ซ่อน textarea
+        document.getElementById("reasonInput").value = ""; // ล้างข้อมูลใน textarea
+    });
+</script>
 {% endblock %}
