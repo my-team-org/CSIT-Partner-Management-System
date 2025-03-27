@@ -14,33 +14,60 @@ def application_form(request, company_id=None):
     else:
         company = None
 
+    human_resource = HumanResouce.objects.filter(company=company).first()
+    human_resource_jobs = HumnanResource_Job.objects.filter(HumanResouce=human_resource)
+    job = human_resource_jobs.first().Job if human_resource_jobs.exists() else None
+
     if request.method == "POST":
         student_form = StudentForm(request.POST, request.FILES)
-        company_form = CompanyForm(request.POST, instance=company)
-        human_resource_form = HumanResouceForm(request.POST)
-        job_form = JobForm(request.POST)
 
-        if student_form.is_valid():  # ตรวจสอบเฉพาะ student_form
-            # บันทึกข้อมูล student
+        # Debugging information
+        print("POST Data:", request.POST)
+        print("FILES Data:", request.FILES)
+
+        if student_form.is_valid():
+            # Save the student form
             student = student_form.save(commit=False)
-            student.company = company  # เชื่อม Student กับ Company
-            student.user = request.user  # กำหนด user จาก request
-            student.save()  # บันทึกลงฐานข้อมูล
-            
-            return redirect('success_page')  # เปลี่ยนไปยังหน้าสำเร็จ
+            student.user = request.user
+            student.save()
+
+            if job:
+                Student_job.objects.create(student=student, job=job)
+                print("บันทึกข้อมูล Student สำเร็จ")
+
+                # Debugging: Confirm calling fill_and_show_pdf
+                print("Calling fill_and_show_pdf...")
+                fill_and_show_pdf(request)
+
+                return redirect('success_page')
+            else:
+                print("Error: No job available for the selected human resource.")
+                return render(request, 'error.html', {'message': 'No job available for the selected human resource.'})
         else:
-            print(student_form.errors)  # เพิ่มการดีบัก
+            # Display form errors
+            print("Student Form Errors:", student_form.errors)
     else:
-        student_form = StudentForm()
-        company_form = CompanyForm(instance=company)
-        human_resource_form = HumanResouceForm()
+        # Fetch the student associated with the current user
+        student = Student.objects.filter(user=request.user).first()
+        student_form = StudentForm(instance=student)
+
+    # Fetch other data to display on the page
+    company_form = CompanyForm(instance=company)
+    human_resource_form = HumanResouceForm(instance=human_resource)
+
+    if job:
+        job_form = JobForm(instance=job)
+    else:
         job_form = JobForm()
 
     context = {
         'student_form': student_form,
         'company_form': company_form,
         'human_resource_form': human_resource_form,
-        'job_form': job_form
+        'job_form': job_form,
+        'company': company,
+        'human_resource': human_resource,
+        'human_resource_jobs': human_resource_jobs if 'human_resource_jobs' in locals() else None,
     }
     return render(request, 'application_form.html', context)
 
@@ -52,7 +79,12 @@ def fill_and_show_pdf(request):
     output_pdf = os.path.join(BASE_DIR, "static/pdf/filled.pdf")  # ไฟล์ที่แก้ไขแล้ว
 
     # ดึงข้อมูลนิสิต
-    student = get_object_or_404(Student, user=request.user)
+    students = Student.objects.filter(user=request.user)
+    if not students.exists():
+        return render(request, 'error.html', {'message': 'ไม่พบนิสิตที่เกี่ยวข้อง'})
+
+    # Handle multiple students (e.g., select the first one or prompt the user to choose)
+    student = students.first()
 
     # ตรวจสอบว่ามีนิสิตสมัครงานหรือไม่
     student_jobs = Student_job.objects.filter(student=student)
@@ -69,6 +101,7 @@ def fill_and_show_pdf(request):
 
     # ดึงข้อมูล Company ที่เกี่ยวข้องกับ HumanResource
     company = human_resource.company
+
 
     # เปิด PDF และเติมข้อมูล
     doc = fitz.open(input_pdf)
@@ -475,8 +508,13 @@ def fill_and_show_pdf(request):
                 print(f"พบคำว่า '{word}' ที่หน้า {page_num + 1} ตำแหน่ง: {rect}") """
     
     # บันทึกไฟล์ PDF ที่แก้ไข
-    doc.save(output_pdf)
-    doc.close()
+    try:
+        doc.save(output_pdf)
+        print(f"PDF saved successfully at {output_pdf}")
+    except Exception as e:
+        print(f"Error saving PDF: {e}")
+    finally:
+        doc.close()
 
     # ส่งไฟล์ PDF ที่ถูกแก้ไขให้ผู้ใช้ดู
     return FileResponse(open(output_pdf, "rb"), content_type="application/pdf")

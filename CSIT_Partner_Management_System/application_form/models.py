@@ -2,15 +2,15 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class JobPosition(models.Model):
-    job_type = models.CharField(max_length=50, verbose_name="ตำแหน่งงาน")  # ชื่อของตำแหน่งงาน
+    job_type = models.CharField(max_length=50,null=True,blank=True, verbose_name="ตำแหน่งงาน")  # ชื่อของตำแหน่งงาน
 
     def __str__(self):
         return self.job_type
 
 class Jobbenefit(models.Model):
-    saraly = models.CharField(max_length=50, verbose_name="เงินเดือน")  # เงินเดือน
-    lunch = models.CharField(max_length=50, verbose_name="อาหารกลางวัน")  # อาหารกลางวัน
-    delivery = models.CharField(max_length=50, verbose_name="รถรับ-ส่ง")  # รถรับ-ส่ง
+    saraly = models.CharField(max_length=50,null=True,blank=True, verbose_name="เงินเดือน")  # เงินเดือน
+    lunch = models.CharField(max_length=50,null=True,blank=True, verbose_name="อาหารกลางวัน")  # อาหารกลางวัน
+    delivery = models.CharField(max_length=50,null=True,blank=True, verbose_name="รถรับ-ส่ง")  # รถรับ-ส่ง
     # สวัสดิการอื่นๆ
 
     def __str__(self):
@@ -26,13 +26,13 @@ class Job(models.Model):
     job_name = models.ForeignKey(JobPosition, on_delete=models.CASCADE, verbose_name="ชื่อตำแหน่งงาน")  # ชื่อตำแหน่งงาน
     job_posted = models.DateTimeField(auto_now_add=True, verbose_name="วันที่ประกาศงาน")  # วันที่ประกาศงาน
     job_updated = models.DateTimeField(auto_now=True, verbose_name="วันที่ปรับปรุงข้อมูล", null=True)  # วันที่ปรับปรุงข้อมูล
-    job_quantity = models.IntegerField(verbose_name="จำนวนที่เปิดรับสมัคร")  # จำนวนที่เปิดรับสมัคร
-    job_description = models.TextField(verbose_name="รายละเอียดงาน")  # รายละเอียดงาน
-    job_skill = models.TextField(verbose_name="ทักษะที่ต้องการ")  # ทักษะที่ต้องการ
-    job_department = models.CharField(max_length=255, verbose_name="สาขาวิชา")  # แผนกที่เกี่ยวข้อง
-    job_welfare_benefit = models.ForeignKey(Jobbenefit, on_delete=models.CASCADE, verbose_name="สวัสดิการ")  # สวัสดิการ
-    job_file = models.FileField(upload_to='uploads/', verbose_name="ไฟล์แนบ")  # ไฟล์แนบ
-    job_status = models.CharField(max_length=50, choices=TYPE_CHOICES_STATUS, verbose_name="สถานะ")
+    job_quantity = models.IntegerField(null=True,blank=True,verbose_name="จำนวนที่เปิดรับสมัคร")  # จำนวนที่เปิดรับสมัคร
+    job_description = models.TextField(null=True,blank=True,verbose_name="รายละเอียดงาน")  # รายละเอียดงาน
+    job_skill = models.TextField(null=True,blank=True,verbose_name="ทักษะที่ต้องการ")  # ทักษะที่ต้องการ
+    job_department = models.CharField(max_length=255,null=True,blank=True, verbose_name="สาขาวิชา")  # แผนกที่เกี่ยวข้อง
+    job_welfare_benefit = models.ForeignKey(Jobbenefit, on_delete=models.CASCADE, null=True, blank=True, verbose_name="สวัสดิการ")  # สวัสดิการ
+    job_file = models.FileField(upload_to='uploads/',null=True,blank=True, verbose_name="ไฟล์แนบ")  # ไฟล์แนบ
+    job_status = models.CharField(max_length=50,null=True,blank=True, choices=TYPE_CHOICES_STATUS, verbose_name="สถานะ")
 
     def __str__(self):
         return str(self.job_name)
@@ -50,29 +50,29 @@ class Company(models.Model):
         ('no-partner', 'ไม่ใช่พาร์ทเนอร์'),
     ]
 
-    name_th = models.CharField(max_length=255, verbose_name="ชื่อหน่วยงาน (ไทย)")
-    name_en = models.CharField(max_length=255, verbose_name="ชื่อหน่วยงาน (อังกฤษ)")
-    email = models.EmailField(verbose_name="E-mail หน่วยงาน")
-    website = models.URLField(blank=True, verbose_name="Website หน่วยงาน")
-    company_type = models.CharField(max_length=50, choices=TYPE_CHOICES, verbose_name="ประเภทหน่วยงาน")
-    description = models.TextField(verbose_name="เกี่ยวกับการประกอบการ")
+    name_th = models.CharField(max_length=255,null=True,blank=True, verbose_name="ชื่อหน่วยงาน (ไทย)")
+    name_en = models.CharField(max_length=255,null=True,blank=True, verbose_name="ชื่อหน่วยงาน (อังกฤษ)")
+    email = models.EmailField(null=True,blank=True,verbose_name="E-mail หน่วยงาน")
+    website = models.URLField(blank=True,null=True, verbose_name="Website หน่วยงาน")
+    company_type = models.CharField(max_length=50,null=True,blank=True, choices=TYPE_CHOICES, verbose_name="ประเภทหน่วยงาน")
+    description = models.TextField(null=True,blank=True,verbose_name="เกี่ยวกับการประกอบการ")
 
-    head_name = models.CharField(max_length=255, verbose_name="ชื่อหัวหน้าหน่วยงาน")
-    head_position = models.CharField(max_length=100, verbose_name="ตำแหน่ง")
+    head_name = models.CharField(max_length=255,null=True,blank=True, verbose_name="ชื่อหัวหน้าหน่วยงาน")
+    head_position = models.CharField(max_length=100,null=True,blank=True, verbose_name="ตำแหน่ง")
 
-    address_no = models.CharField(max_length=100, verbose_name="ที่ตั้ง เลขที่")
-    address_moo = models.CharField(max_length=100, verbose_name="หมู่ที่", blank=True)
-    address_building = models.CharField(max_length=100, verbose_name="ชื่ออาคาร", blank=True)
-    address_soi = models.CharField(max_length=100, verbose_name="ซอย", blank=True)
-    address_road = models.CharField(max_length=100, verbose_name="ถนน", blank=True)
-    province = models.CharField(max_length=100, verbose_name="จังหวัด")
-    district = models.CharField(max_length=100, verbose_name="อำเภอ")
-    subdistrict = models.CharField(max_length=100, verbose_name="ตำบล")
-    postal_code = models.CharField(max_length=10, verbose_name="รหัสไปรษณีย์")
-    phone = models.CharField(max_length=20, verbose_name="โทรศัพท์")
-    company_type = models.CharField(max_length=50, choices=TYPE_CHOICES_COMPANY, verbose_name="ประเภทบริษัท")
-    company_file = models.FileField(upload_to='uploads/', verbose_name="ไฟล์แนบ")
-    company_date_add = models.DateTimeField(auto_now_add=True, verbose_name="วันที่เพิ่มข้อมูลบริษัท")
+    address_no = models.CharField(max_length=100,null=True,blank=True, verbose_name="ที่ตั้ง เลขที่")
+    address_moo = models.CharField(max_length=100,null=True, verbose_name="หมู่ที่", blank=True)
+    address_building = models.CharField(max_length=100,null=True, verbose_name="ชื่ออาคาร", blank=True)
+    address_soi = models.CharField(max_length=100,null=True, verbose_name="ซอย", blank=True)
+    address_road = models.CharField(max_length=100,null=True, verbose_name="ถนน", blank=True)
+    province = models.CharField(max_length=100,null=True,blank=True, verbose_name="จังหวัด")
+    district = models.CharField(max_length=100,null=True,blank=True, verbose_name="อำเภอ")
+    subdistrict = models.CharField(max_length=100,null=True,blank=True, verbose_name="ตำบล")
+    postal_code = models.CharField(max_length=10,null=True,blank=True, verbose_name="รหัสไปรษณีย์")
+    phone = models.CharField(max_length=20,null=True,blank=True, verbose_name="โทรศัพท์")
+    company_type = models.CharField(max_length=50,null=True,blank=True, choices=TYPE_CHOICES_COMPANY, verbose_name="ประเภทบริษัท")
+    company_file = models.FileField(upload_to='uploads/',null=True,blank=True, verbose_name="ไฟล์แนบ")
+    company_date_add = models.DateTimeField(auto_now_add=True,blank=True, verbose_name="วันที่เพิ่มข้อมูลบริษัท")
 
     def __str__(self):
         return self.name_th
@@ -87,11 +87,11 @@ class Company_image(models.Model):
 class HumanResouce(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="ผู้ใช้งาน")
     company = models.ForeignKey(Company, on_delete=models.CASCADE, verbose_name="หน่วยงาน")
-    contact_name = models.CharField(max_length=255, verbose_name="ชื่อผู้ประสานงาน")
-    contact_position = models.CharField(max_length=100, verbose_name="ตำแหน่ง")
-    contact_department = models.CharField(max_length=100, verbose_name="แผนก/หน่วย/ฝ่าย")
-    contact_email = models.EmailField(verbose_name="E-mail ผู้ประสานงาน")
-    contact_phone = models.CharField(max_length=20, verbose_name="โทรศัพท์ผู้ประสานงาน")
+    contact_name = models.CharField(max_length=255,null=True,blank=True, verbose_name="ชื่อผู้ประสานงาน")
+    contact_position = models.CharField(max_length=100,null=True,blank=True, verbose_name="ตำแหน่ง")
+    contact_department = models.CharField(max_length=100,null=True,blank=True, verbose_name="แผนก/หน่วย/ฝ่าย")
+    contact_email = models.EmailField(null=True,blank=True,verbose_name="E-mail ผู้ประสานงาน")
+    contact_phone = models.CharField(max_length=20,null=True,blank=True, verbose_name="โทรศัพท์ผู้ประสานงาน")
 
     def __str__(self):
         return self.contact_name
@@ -127,34 +127,34 @@ class Student(models.Model):
     student_id = models.CharField(max_length=20, verbose_name="รหัสนิสิต")
     field_of_study = models.CharField(max_length=255, verbose_name="สาขาวิชา")
     year = models.IntegerField(verbose_name="ชั้นปี")
-    advisor = models.CharField(max_length=255, verbose_name="อาจารย์ที่ปรึกษา")
-    academic_year = models.CharField(max_length=9, verbose_name="ปีการศึกษา")
-    semester = models.CharField(max_length=10,choices=Academic_Year_CHOICES, verbose_name="ภาคเรียน")
-    gpa_term = models.FloatField(verbose_name="เกรดเฉลี่ยภาคเรียนที่ผ่านมา")
-    gpa_total = models.FloatField(verbose_name="เกรดเฉลี่ยรวม")
-    internship_start_date = models.DateField(verbose_name="วันที่เริ่มปฏิบัติงาน")
-    internship_end_date = models.DateField(verbose_name="วันที่สิ้นสุดปฏิบัติงาน")
-    id_card = models.CharField(max_length=13, verbose_name="บัตรประจำตัวประชาชนเลขที่")
-    id_card_issue_date = models.DateField(verbose_name="วันที่ออกบัตร")
-    id_card_expiry_date = models.DateField(verbose_name="วันที่บัตรหมดอายุ")
-    national = models.CharField(max_length=50, verbose_name="เชื้อชาติ")
-    citizenship = models.CharField(max_length=50, verbose_name="สัญชาติ")
-    religion = models.CharField(max_length=50, verbose_name="ศาสนา")
-    gender = models.CharField(max_length=10, choices=GENDER_CHOICES, verbose_name="เพศ")
-    height = models.IntegerField(verbose_name="ส่วนสูง (cm.)")
-    weight = models.IntegerField(verbose_name="น้ำหนัก (kg.)")
-    disease = models.CharField(max_length=255, blank=True, verbose_name="โรคประจำตัว (ถ้ามี)")
-    address = models.TextField(verbose_name="ที่อยู่ปัจจุบัน")
-    mobile_phone = models.CharField(max_length=20, verbose_name="โทรศัพท์มือถือ")
+    advisor = models.CharField(max_length=255, null=True, verbose_name="อาจารย์ที่ปรึกษา")
+    academic_year = models.CharField(max_length=9, null=True, verbose_name="ปีการศึกษา")
+    semester = models.CharField(max_length=10,choices=Academic_Year_CHOICES, null=True, verbose_name="ภาคเรียน")
+    gpa_term = models.FloatField(null=True, verbose_name="เกรดเฉลี่ยภาคเรียนที่ผ่านมา")
+    gpa_total = models.FloatField(null=True, verbose_name="เกรดเฉลี่ยรวม")
+    internship_start_date = models.DateField(null=True, verbose_name="วันที่เริ่มปฏิบัติงาน")
+    internship_end_date = models.DateField(null=True,verbose_name="วันที่สิ้นสุดปฏิบัติงาน")
+    id_card = models.CharField(max_length=13, null=True, verbose_name="บัตรประจำตัวประชาชนเลขที่")
+    id_card_issue_date = models.DateField(null=True, verbose_name="วันที่ออกบัตร")
+    id_card_expiry_date = models.DateField(null=True, verbose_name="วันที่บัตรหมดอายุ")
+    national = models.CharField(max_length=50, null=True, verbose_name="เชื้อชาติ")
+    citizenship = models.CharField(max_length=50,null=True, verbose_name="สัญชาติ")
+    religion = models.CharField(max_length=50,null=True, verbose_name="ศาสนา")
+    gender = models.CharField(max_length=10,null=True, choices=GENDER_CHOICES, verbose_name="เพศ")
+    height = models.IntegerField(null=True, verbose_name="ส่วนสูง (cm.)")
+    weight = models.IntegerField(null=True, verbose_name="น้ำหนัก (kg.)")
+    disease = models.CharField(max_length=255,null=True, blank=True, verbose_name="โรคประจำตัว (ถ้ามี)")
+    address = models.TextField(null=True, verbose_name="ที่อยู่ปัจจุบัน")
+    mobile_phone = models.CharField(max_length=20, null=True, verbose_name="โทรศัพท์มือถือ")
     email = models.EmailField(verbose_name="E-mail")
-    emergency_contact = models.CharField(max_length=255, verbose_name="บุคคลที่ติดต่อได้ในกรณีฉุกเฉิน")
-    relationship = models.CharField(max_length=50, verbose_name="ความเกี่ยวข้องเป็น")
-    emergency_phone = models.CharField(max_length=20, verbose_name="โทรศัพท์")
-    photo = models.ImageField(upload_to='uploads/', verbose_name="รูปถ่าย")
-    resume = models.FileField(upload_to='uploads/', verbose_name="Resume")
-    transcript = models.FileField(upload_to='uploads/', verbose_name="Transcript")
-    activity_transcript = models.FileField(upload_to='uploads/', verbose_name="Activity Transcript")
-    soldier = models.CharField(max_length=50, choices= SOLDIER_CHOICES,verbose_name="สถานะทหาร")
+    emergency_contact = models.CharField(max_length=255,null=True, verbose_name="บุคคลที่ติดต่อได้ในกรณีฉุกเฉิน")
+    relationship = models.CharField(max_length=50,null=True, verbose_name="ความเกี่ยวข้องเป็น")
+    emergency_phone = models.CharField(max_length=20,null=True, verbose_name="โทรศัพท์")
+    photo = models.ImageField(upload_to='uploads/', null=True, blank=True, verbose_name="รูปถ่าย")
+    resume = models.FileField(upload_to='uploads/', null=True, blank=True, verbose_name="Resume")
+    transcript = models.FileField(upload_to='uploads/', null=True, blank=True, verbose_name="Transcript")
+    activity_transcript = models.FileField(upload_to='uploads/', null=True, blank=True, verbose_name="Activity Transcript")
+    soldier = models.CharField(max_length=50,null=True, choices= SOLDIER_CHOICES,verbose_name="สถานะทหาร")
 
     def __str__(self):
         return self.name

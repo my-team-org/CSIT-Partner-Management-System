@@ -124,7 +124,7 @@ class HumanResourceJobForm(forms.ModelForm):
 class JobForm(forms.ModelForm):
     class Meta:
         model = Job
-        fields = 'job_name', 'job_department', 'job_description', 'job_skill', 'job_welfare_benefit'
+        fields = ['job_name', 'job_department', 'job_description', 'job_skill', 'job_welfare_benefit']
         widgets = {
             # ข้อมูลตำแหน่งงาน
             'job_name': forms.Select(attrs={
