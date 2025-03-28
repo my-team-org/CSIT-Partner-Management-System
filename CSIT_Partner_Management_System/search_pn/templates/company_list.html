@@ -5,6 +5,11 @@
 {% block styleCustom %}
     <style>
         /* General Styles */
+    .company-type i{
+        color: #FFC145;
+        font-size: 16px;
+        margin-left: 5px;
+    }
 body {
     font-family: 'Arial', sans-serif;
     background-color: #f8f8f8;
@@ -191,7 +196,13 @@ h2 {
                         <p>ไม่มีตำแหน่งงานที่เปิดรับสมัคร</p>
                     {% endfor %}
                     </p>
-                    <button class="details-btn">รายละเอียด </button> <i class="bi bi-person-heart"> Partner </i>
+                    <div class="company-type">
+                        <button class="details-btn" onclick="window.location.href='#'">รายละเอียด </button>
+                        {% if company.company_type == 'partner'%}
+                        <i class="bi bi-person-heart"></i> Partner 
+                        {% else %}
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </li>
