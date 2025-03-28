@@ -1,0 +1,61 @@
+.header {
+    background-color: #ff8000;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+}
+.button-container {
+    margin: 20px;
+}
+.add-button {
+    background-color: #ff8000;
+    color: white;
+    padding: 8px 12px;
+    text-decoration: none;
+    border-radius: 5px;
+    display: inline-block;
+}
+.company-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+    font-family: Arial, sans-serif;
+}
+.company-table thead {
+    background-color: #ff8000;
+    color: white;
+}
+.company-table th, .company-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+.company-row:nth-child(even) {
+    background-color: #f9f9f9;
+}
+.edit-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 5px 10px;
+    text-decoration: none;
+    border-radius: 3px;
+}
+.delete-form {
+    display: inline;
+    margin-left: 5px;
+}
+.delete-button {
+    background-color: #d9534f;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+.company-logo {
+    width: 100px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}

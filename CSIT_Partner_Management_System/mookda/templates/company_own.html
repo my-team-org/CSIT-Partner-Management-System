@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>บริษัทพาร์ทเนอร์</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+</head>
+
+<body>
+
+    <h1 class="header">บริษัทของคุณ</h1>
+
+    <div class="button-container">
+        <div>
+            {% if is_admin %}
+            <a href="{% url 'company_create' %}" class="add-button">เพิ่มบริษัทใหม่</a>
+            {% endif %}
+        </div>
+        <div>
+            <a href="{% url 'logout' %}" class="logout-button">ออกจากระบบ</a>
+        </div>
+    </div>
+    <table class="company-table">
+        <thead>
+            <tr>
+                <th>รูปบริษัท</th>
+                <th>ชื่อบริษัท</th>
+                <th>ประเภท</th>
+                <th>อีเมล</th>
+                <th>โทรศัพท์</th>
+                <th>จัดการ</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for company in companies %}
+            <tr class="company-row">
+                <td>
+                    {% if company.logo %}
+                    <img src="{{ company.logo.url }}" alt="โลโก้บริษัท" class="company-logo">
+                    {% else %}
+                    <span>ไม่มีโลโก้</span>
+                    {% endif %}
+                </td>
+                <td>{{ company.name_th }}</td>
+                <td>{{ company.get_company_type_display }}</td>
+                <td>{{ company.email }}</td>
+                <td>{{ company.phone }}</td>
+                <td>
+                    <a href="{% url 'company_edit' company.id %}" class="edit-button">แก้ไข</a>
+                    <form method="POST" action="{% url 'company_delete' company.id %}" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="delete-button"
+                            onclick="return confirm('คุณแน่ใจที่จะลบบริษัทนี้หรือไม่?')">ลบ</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center">ไม่มีบริษัทของคุณ</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        // เพิ่มการยืนยันก่อนลบ
+        document.querySelectorAll('.delete-button').forEach(button => {
+            button.addEventListener('click', function (e) {
+                if (!confirm('คุณแน่ใจที่จะลบบริษัทนี้หรือไม่?')) {
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

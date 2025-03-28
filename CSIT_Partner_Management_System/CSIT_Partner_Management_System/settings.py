@@ -15,6 +15,9 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -27,6 +30,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+LOGIN_URL = '/login/'  # หรือ URL ที่คุณต้องการใช้สำหรับหน้าเข้าสู่ระบบ
+LOGIN_REDIRECT_URL = '/companies/own/'  # URL สำหรับหน้า company_own.html
+LOGOUT_REDIRECT_URL = '/login/'  # เปลี่ยนเส้นทางไปยังหน้าเข้าสู่ระบบหลังจากออกจากระบบสำเร็จ
+
 
 # Application definition
 
@@ -37,6 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'mookda',
+    'main',
 ]
 
 MIDDLEWARE = [
@@ -75,8 +84,12 @@ WSGI_APPLICATION = 'CSIT_Partner_Management_System.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',  # ใช้ MySQL เป็นฐานข้อมูล
+        'NAME': 'partner_db',  # ชื่อฐานข้อมูล
+        'USER': 'root',  # ชื่อผู้ใช้ MySQL
+        'PASSWORD': '12345678',  # รหัสผ่านของ MySQL
+        'HOST': 'localhost',  # ที่อยู่ของ MySQL server
+        'PORT': '3306',  # พอร์ตของ MySQL (พอร์ตเริ่มต้นคือ 3306)
     }
 }
 
@@ -115,7 +128,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+
+# ระบุโฟลเดอร์ที่เก็บไฟล์ static
+STATICFILES_DIRS = [
+    BASE_DIR / "static",  # หรือ "d:/xampp/mookda/CSIT-Partner-Management-System/CSIT_Partner_Management_System/static"
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
