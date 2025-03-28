@@ -1,4 +1,3 @@
-<!-- filepath: d:\Progarming Work\SE\CSIT_Partner_Management_System\application_form\templates\application_form.html -->
 {% load static %}
 <!DOCTYPE html>
 <html lang="th">
@@ -9,13 +8,10 @@
     <title>แบบฟอร์มสมัครงานสหกิจศึกษา</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* พื้นหลังและฟอนต์ */
         body {
-            background-color: #f8f9fa;
+            background-color: #fff;
             font-family: 'TH SarabunPSK', sans-serif;
         }
-
-        /* การ์ดแบบฟอร์ม */
         .card {
             border-radius: 10px;
             border: 1px solid #dee2e6;
@@ -23,100 +19,91 @@
             margin: 20px auto;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
-
-        /* ส่วนหัวการ์ด */
         .card-header {
-            background-color: #003366;
-            color: #fff;
+            background-color:rgba(255, 196, 128, 0.4);
+            color: #000;
             text-align: center;
             padding: 15px;
             font-size: 1.5rem;
         }
-
-        /* ส่วนหัวฟอร์มแต่ละส่วน */
         .form-section h4 {
-            color: #003366;
+            color: #000;
             border-bottom: 2px solid #003366;
             padding-bottom: 5px;
             margin-bottom: 20px;
             text-align: center;
         }
-
-        /* ฟิลด์และปุ่ม */
         .form-control, .form-select {
             border-radius: 5px;
             border: 1px solid #ced4da;
             margin-bottom: 15px;
             box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
         }
-
         .form-control:focus {
             border-color: #003366;
             box-shadow: 0 0 5px rgba(0, 51, 102, 0.5);
         }
-
         .btn-submit {
-            background-color: #003366;
-            border-color: #003366;
+            background-color:rgb(255, 155, 68);
+            border-color:rgb(255, 163, 16);
             color: #fff;
             border-radius: 5px;
             transition: 0.3s;
             padding: 10px 20px;
         }
-
         .btn-submit:hover {
-            background-color: #002244;
-            border-color: #002244;
+            background-color:rgb(255, 126, 13);
+            border-color:rgb(255, 120, 2);
         }
-
-        /* ข้อความและ label */
-        .form-label {
-            font-weight: 600;
-            color: #003366;
-        }
-
-        .text-danger {
-            color: #dc3545;
-        }
-
-        /* ช่องว่างและระยะห่าง */
-        .container {
-            padding: 20px;
-        }
-
-        .card-body {
-            padding: 20px;
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        /* Navbar */
         .navbar {
-            background-color: #ffffff;
+            background-color: #fff;
             border-bottom: 1px solid #dee2e6;
         }
-
         .navbar-brand img {
             width: 80px;
             height: auto;
         }
-
         .navbar a {
             color: #003366;
             font-weight: 600;
         }
-
         .navbar a:hover {
             text-decoration: underline;
+        }
+        .section-title {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.3rem;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        /* สไตล์ปุ่มกลับไปด้านบน */
+        #back-to-top {
+            display: none; /* ซ่อนปุ่มเริ่มต้น */
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            background-color:rgb(255, 151, 47);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+            text-align: center;
+            line-height: 40px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        #back-to-top:hover {
+            background-color:rgb(255, 127, 22);
         }
     </style>
 </head>
 
 <body>
-
-    <!-- Navbar -->
     <nav class="navbar navbar-light">
         <div class="container">
             <a class="navbar-brand" href="#">
@@ -128,79 +115,57 @@
         </div>
     </nav>
 
-    <!-- Form Container -->
     <div class="container py-5">
         <div class="card shadow-sm">
             <div class="card-header">
                 แบบฟอร์มสมัครงานสหกิจศึกษา
             </div>
-            <div class="container py-5">
-                <!-- Section 1: รายละเอียดหน่วยงาน -->
-                <section id="section-1">
-                    <div class="card shadow-sm mb-4">
-                        <div class="card-header">
-                            ส่วนที่ 1: รายละเอียดหน่วยงาน
-                        </div>
-                        <div class="card-body">
-                            <form method="post" enctype="multipart/form-data">
-                                {% csrf_token %}
-                                <div class="form-section">
-                                    <h4>รายละเอียดหน่วยงาน</h4>
-                                    {{ company_form.as_p }}
-                                </div>
-                            </form>
-                        </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <section class="mb-4">
+                        <div class="section-title">ส่วนที่ 1: รายละเอียดหน่วยงาน</div>
+                        {{ company_form.as_p }}
+                    </section>
+                    <section class="mb-4">
+                        <div class="section-title">ข้อมูลผู้ประสานงาน</div>
+                        {{ human_resource_form.as_p }}
+                    </section>
+                    <section class="mb-4">
+                        <div class="section-title">ข้อมูลตำแหน่งงาน</div>
+                        {{ job_form.as_p }}
+                    </section>
+                    <section class="mb-4">
+                        <div class="section-title">ส่วนที่ 2: ข้อมูลส่วนตัวนิสิต</div>
+                        {{ student_form.as_p }}
+                    </section>
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-submit">บันทึก</button>
                     </div>
-                </section>
-            
-                <!-- Section 2: ข้อมูลผู้ประสานงาน -->
-                        <div class="card-body">
-                            <form method="post" enctype="multipart/form-data">
-                                {% csrf_token %}
-                                <div class="form-section">
-                                    <h4>ข้อมูลผู้ประสานงาน</h4>
-                                    {{ human_resource_form.as_p }}
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </section>
-            
-                <!-- Section 3: ข้อมูลตำแหน่งงาน -->
-                        <div class="card-body">
-                            <form method="post" enctype="multipart/form-data">
-                                {% csrf_token %}
-                                <div class="form-section">
-                                    <h4>ข้อมูลตำแหน่งงาน</h4>
-                                    {{ job_form.as_p }}
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </section>
-            
-                <!-- Section 4: ข้อมูลส่วนตัวนิสิต -->
-                <section id="section-4">
-                    <div class="card shadow-sm mb-4">
-                        <div class="card-header">
-                            ส่วนที่ 2: ข้อมูลส่วนตัวนิสิต
-                        </div>
-                        <div class="card-body">
-                            <form method="post" enctype="multipart/form-data">
-                                {% csrf_token %}
-                                <div class="form-section">
-                                    <h4>ข้อมูลส่วนตัวนิสิต</h4>
-                                    {{ student_form.as_p }}
-                                </div>
-                                <!-- Submit Button -->
-                                <div class="text-center mt-4">
-                                    <button type="submit" class="btn btn-submit">บันทึก</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </section>
+                </form>
             </div>
+        </div>
+    </div>
+
+ <!-- ปุ่มกลับไปด้านบน -->
+ <button id="back-to-top" class="btn btn-primary" title="กลับไปด้านบน">↑</button>   
+
+ <script>
+    // แสดง/ซ่อนปุ่มเมื่อเลื่อนหน้า
+    const backToTopButton = document.getElementById("back-to-top");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+            backToTopButton.style.display = "block";
+        } else {
+            backToTopButton.style.display = "none";
+        }
+    };
+
+    // เมื่อคลิกปุ่ม ให้เลื่อนกลับไปด้านบน
+    backToTopButton.onclick = function () {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+</script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

@@ -158,8 +158,8 @@ class StudentForm(forms.ModelForm):
         fields = ['name','student_id','field_of_study','year','advisor','academic_year','semester',
                   'gpa_term','gpa_total','internship_start_date','internship_end_date','id_card',
                   'id_card_issue_date','id_card_expiry_date','national','citizenship','religion',
-                  'gender','height','weight','disease','address','mobile_phone','email',
-                  'emergency_contact','relationship','emergency_phone','photo','resume','transcript','activity_transcript','soldier'
+                  'gender','height','weight','disease','address','mobile_phone','email','soldier',
+                  'emergency_contact','relationship','emergency_phone','photo','resume','transcript','activity_transcript'
                   ]
         widgets = {
             # ข้อมูลส่วนตัวนิสิต
@@ -261,6 +261,9 @@ class StudentForm(forms.ModelForm):
             'email': forms.EmailInput(attrs={
                 'class': 'form-control', 
                 'placeholder': 'กรอกอีเมล'
+            }),
+            'soldier': forms.Select(attrs={
+                'class': 'form-select'
             }),
             'emergency_contact': forms.TextInput(attrs={
                 'class': 'form-control', 
