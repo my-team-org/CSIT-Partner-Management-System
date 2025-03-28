@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">รายการงาน</h2>
+
+    <!-- ปุ่มเพิ่มงาน -->
+    <div class="d-flex justify-content-end mb-4">
+        <a href="{% url 'add_job' %}" class="btn btn-primary btn-lg rounded-pill shadow">+ เพิ่มงาน</a>
+    </div>
+
+    <!-- ตาราง -->
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-body">
+            <table class="table table-hover text-center">
+                <thead class="bg-dark text-white">
+                    <tr>
+                        <th>ID</th>
+                        <th>ตำแหน่งงาน</th>
+                        <th>วันที่ประกาศ</th>
+                        <th>จำนวนที่เปิดรับ</th>
+                        <th>สถานะ</th>
+                        <th>จัดการ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for job in jobs %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ job.job_name }}</td>
+                        <td>{{ job.job_posted|date:"d/m/Y" }}</td>
+                        <td>{{ job.job_quantity }}</td>
+                        <td>
+                            {% if job.job_status == "open" %}
+                                <span class="badge bg-success px-3 py-2">เปิดรับสมัคร</span>
+                            {% else %}
+                                <span class="badge bg-danger px-3 py-2">ปิดรับสมัคร</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'edit_add_job' job.job_id %}"class="btn btn-sm text-white edit-btn"> แก้ไข</a>
+                            <a href="{% url 'delete_job' job.job_id %}"  class="btn btn-sm text-white delete-btn"
+                               onclick="return confirm('คุณต้องการลบงานนี้ใช่หรือไม่?');">ลบ</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-muted">ไม่มีข้อมูล</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+        font-family: 'Arial', sans-serif;
+    }
+    
+    h2 {
+        color: #3d104b;
+        font-weight: bold;
+    }
+
+    .btn-primary {
+        background-color: #3d104b;
+        border: none;
+    }
+    
+    .btn-primary:hover {
+        background-color: #f58957;
+    }
+
+    .btn-outline-warning, .btn-outline-danger {
+        border-width: 2px;
+    }
+
+    .card {
+        background: white;
+        border-radius: 15px;
+    }
+
+    table {
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    thead {
+        background-color: #3d104b !important;
+    }
+
+    thead th {
+        color: white;
+    }
+    .edit-btn {
+        background-color: #f58957; 
+        border-radius: 20px;
+        padding: 6px 14px;
+        transition: 0.3s;
+    }
+
+    .edit-btn:hover {
+        background-color: #d96b3d;
+        transform: scale(1.05);
+    }
+
+    /* ปุ่มลบ */
+    .delete-btn {
+        background-color: #f2aab1;
+        border-radius: 20px;
+        padding: 6px 14px;
+        transition: 0.3s;
+    }
+
+    .delete-btn:hover {
+        background-color: #b02a37;
+        transform: scale(1.05);
+    }
+    .text-center  {
+        color: #3e184d;
+        font-weight: bold;
+    }
+    
+</style>
+{% endblock %}

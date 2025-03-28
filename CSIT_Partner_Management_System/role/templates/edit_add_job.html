@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แก้ไขงาน</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .form-container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #343a40;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 8px;
+            background: #3d104b;
+            border: none;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-primary:hover {
+            background: #f58957;
+        }
+
+    </style>
+
+</head>
+<body class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="form-container">
+        <h2>แก้ไขงาน</h2>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="id_job_name">{{ form.job_name.label }}</label>
+                {{ form.job_name }}
+            </div>
+
+            <div class="mb-3">
+                <label for="id_job_description">{{ form.job_description.label }}</label>
+                {{ form.job_description }}
+            </div>
+
+            <div class="mb-3">
+                <label for="id_job_skill">{{ form.job_skill.label }}</label>
+                {{ form.job_skill }}
+            </div>
+
+            <div class="mb-3">
+                <label for="id_job_department">{{ form.job_department.label }}</label>
+                {{ form.job_department }}
+            </div>
+
+            <div class="mb-3">
+                <label for="id_job_welfare_benefit">{{ form.job_welfare_benefit.label }}</label>
+                {{ form.job_welfare_benefit }}
+            </div>
+
+            <div class="mb-3">
+                <label for="id_job_quantity">{{ form.job_quantity.label }}</label>
+                {{ form.job_quantity }}
+            </div>
+
+            <div class="mb-3">
+                <label for="id_job_file">{{ form.job_file.label }}</label>
+                {{ form.job_file }}
+            </div>
+
+            <div class="mb-3">
+                <label for="id_job_status">{{ form.job_status.label }}</label>
+                {{ form.job_status }}
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-3">บันทึกการแก้ไข</button>
+        </form>
+    </div>
+
+</body>
+
+</html>
