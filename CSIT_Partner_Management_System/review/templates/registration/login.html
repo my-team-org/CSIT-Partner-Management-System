@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}เข้าสู่ระบบ{% endblock %}
+
+{% block styleCustom %}
+<style>
+    .container {
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 20px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .btn-warning {
+        background-color: #FFC145;
+        border-color: #FFC145;
+        color: white;
+    }
+    .btn-warning:hover {
+        background-color: #FFAE00;
+        border-color: #FFAE00;
+    }
+    .errorlist {
+        color: red;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h3 class="mb-4 text-center">เข้าสู่ระบบ</h3>
+    {% if form.errors %}
+        <div class="alert alert-danger">
+            ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง
+        </div>
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="id_username">ชื่อผู้ใช้</label>
+            <input type="text" name="username" class="form-control" id="id_username" required>
+        </div>
+        <div class="form-group">
+            <label for="id_password">รหัสผ่าน</label>
+            <input type="password" name="password" class="form-control" id="id_password" required>
+        </div>
+        <button type="submit" class="btn btn-warning w-100 mt-3">เข้าสู่ระบบ</button>
+    </form>
+</div>
+{% endblock %}

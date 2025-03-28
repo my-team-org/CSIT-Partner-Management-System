@@ -22,14 +22,14 @@ class ReviewForm(forms.ModelForm):
             'job_type', 'job_description', 'experience', 'advice'
         ]
         widgets = {
-            'overall_rating': forms.HiddenInput(),
-            'benefits_rating': forms.HiddenInput(),
-            'environment_rating': forms.HiddenInput(),
-            'management_rating': forms.HiddenInput(),
-        }
+    'overall_rating': forms.HiddenInput(attrs={'id': 'id_overall_rating'}),
+    'benefits_rating': forms.HiddenInput(attrs={'id': 'id_benefits_rating'}),
+    'environment_rating': forms.HiddenInput(attrs={'id': 'id_environment_rating'}),
+    'management_rating': forms.HiddenInput(attrs={'id': 'id_management_rating'}),
+}
+
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['company'].queryset = Company.objects.all()
         self.fields['company'].empty_label = "กรุณาเลือกบริษัท"
-
