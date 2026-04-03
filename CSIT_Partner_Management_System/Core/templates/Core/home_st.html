@@ -1,0 +1,89 @@
+{% extends 'Core/base.html' %}
+
+{% block title %}CSIT Co-OP{% endblock %}
+
+{% block styleCustom %}
+    <style>
+        .header {
+            background-color: #FAEBE5;
+            padding: 100px 0;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        .header h1 {
+            font-weight: bold;
+        }
+        h1 span:first-of-type {
+            color: #F05A23;
+          }
+          
+        h1 span:last-of-type {
+            color: #311F81;
+          }
+        .card-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: -90px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 10;
+            background-color:white;
+            padding:20px
+        }
+        .card {
+            width: 200px;
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card a {
+            text-decoration: none;
+            color: inherit;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="header">
+        <h1 class="display-4 fw-bold mb-3"><span>CS</span><span>IT</span> Partner Management System</h1>
+        <p class="fs-5 text-muted">เว็บสำหรับค้นหาสถานประกอบการ ตำแหน่งงาน<br>และจัดทำเอกสารการสมัครงาน</p>
+    </div>
+    
+    <div class="container">
+        <div class="card-container ">
+            <div class="card">
+                <a href="{% url 'core:company_list' %}" class="d-block">
+                    <i class="bi bi-search-heart text-primary" style="font-size: 3rem;"></i>
+                    <p class="mt-2 mb-0 fw-semibold">ค้นหาสถานประกอบการ</p>
+                </a>
+            </div>
+            <div class="card">
+                <a href="{% url 'core:edit_student' %}" class="d-block">
+                    <i class="bi bi-person-badge text-info" style="font-size: 3rem;"></i>
+                    <p class="mt-2 mb-0 fw-semibold">จัดการประวัติส่วนตัว</p>
+                </a>
+            </div>
+            <div class="card">
+                <a href="{% url 'application_form:application_history' %}" class="d-block">
+                    <i class="bi bi-filetype-pdf text-danger" style="font-size: 3rem;"></i>
+                    <p class="mt-2 mb-0 fw-semibold">จัดการเอกสารสมัครงาน</p>
+                </a>
+            </div>
+
+            <div class="card">
+                <a href="{% url 'review_page' %}" class="d-block">
+                    <i class="bi bi-chat-heart-fill text-danger" style="font-size: 3rem;"></i>
+                    <p class="mt-2 mb-0 fw-semibold">รีวิวบริษัท</p>
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

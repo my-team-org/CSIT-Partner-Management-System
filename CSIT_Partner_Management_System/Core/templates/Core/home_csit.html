@@ -1,0 +1,74 @@
+{% extends 'Core/base.html' %}
+
+{% block title %}CSIT Co-OP{% endblock %}
+
+{% block styleCustom %}
+    <style>
+        .header {
+            background-color: #FAEBE5;
+            padding: 100px 0;
+            position: relative;
+            z-index: 1;
+        }
+        h1 span:first-of-type {
+            color: #F05A23;
+          }
+          
+        h1 span:last-of-type {
+            color: #311F81;
+          }
+        .card-container {
+            margin-top: -90px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 10;
+            background-color: white;
+        }
+        .card {
+            width: 200px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card a {
+            text-decoration: none;
+            color: inherit;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="header text-center">
+        <div class="container">
+            <h1 class="display-4 fw-bold mb-3"><span>CS</span><span>IT</span> Partner Management System</h1>
+            <p class="fs-5 text-muted">เว็บสำหรับค้นหาสถานประกอบการ ตำแหน่งงาน<br>และจัดทำเอกสารการสมัครงาน</p>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="card-container p-4 d-flex justify-content-center gap-3">
+            <div class="card p-4 shadow-sm">
+                <a href="{% url 'company_list' %}" class="d-block">
+                    <i class="bi bi-building" style="font-size: 3rem; color: #F05A23;"></i>
+                    <p class="mt-2 mb-0 fw-semibold">แก้ไขข้อมูลบริษัท</p>
+                </a>
+            </div>
+            <div class="card p-4 shadow-sm">
+                <a href="{% url 'job_list' %}" class="d-block">
+                    <i class="bi bi-person-badge" style="font-size: 3rem; color: #311F81;"></i>
+                    <p class="mt-2 mb-0 fw-semibold">ประกาศรับสมัครงาน</p>
+                </a>
+            </div>
+
+            <div class="card p-4 shadow-sm">
+                <a href="{% url 'Admin_check:index' %}" class="d-block">
+                    <i class="bi bi-filetype-pdf text-danger" style="font-size: 3rem; color: #311F81;"></i>
+                    <p class="mt-2 mb-0 fw-semibold">ตรวจสอบใบสมัคร</p>
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

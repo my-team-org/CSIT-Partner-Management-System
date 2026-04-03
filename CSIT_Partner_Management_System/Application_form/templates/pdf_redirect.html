@@ -1,0 +1,21 @@
+{% extends 'Core/base.html' %}
+{% block content %}
+<script>
+    // เปิด PDF ในแท็บใหม่
+    window.open("{{ pdf_url }}", "_blank");
+    
+    // Redirect ไปหน้า history หลังจากแสดง PDF แล้ว
+    window.location.href = "{{ history_url }}";
+</script>
+
+<noscript>
+    <div class="alert alert-info">
+        <p>เอกสาร PDF ของคุณถูกสร้างเรียบร้อยแล้ว: 
+            <a href="{{ pdf_url }}" target="_blank">คลิกเพื่อดู</a>
+        </p>
+        <p>
+            <a href="{{ history_url }}" class="btn btn-primary">ไปหน้าประวัติการสมัคร</a>
+        </p>
+    </div>
+</noscript>
+{% endblock %}

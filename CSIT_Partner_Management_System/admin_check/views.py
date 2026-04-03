@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
-from .models import *
+from Core.models import *
 from django.http import JsonResponse
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
 from .forms import ApplicationForm
+
 # Create your views here.
 def index(request):
     applications = application_forms.objects.filter(status='pending')
@@ -34,7 +35,7 @@ def admin_check(request , application_id):
             application_instance.status = 'rejected'
         # Save the updated application instance
         application_instance.save()
-        return redirect('index')
+        return redirect('Admin_check:index')
     else:
         form = ApplicationForm(instance=application_instance)
 

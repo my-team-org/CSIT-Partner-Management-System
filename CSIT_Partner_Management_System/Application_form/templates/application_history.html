@@ -1,0 +1,159 @@
+{% extends 'Core/base.html' %}
+{% load static %}
+
+{% block styleCustom %}
+<style>
+    .table th {
+        background-color: #FFC145;
+        font-weight: 600;
+    }
+    
+    .badge {
+        font-size: 0.9rem;
+        padding: 0.35em 0.65em;
+    }
+    
+    .alert {
+        border-radius: 8px;
+    }
+    
+    .card {
+        border-radius: 12px;
+        overflow: hidden;
+        border: none;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    .card-header {
+        font-size: 1.25rem;
+        background-color: #FFC145; /* Orange header */
+    }
+    
+    .btn-primary, .bg-primary {
+        background-color: #F05A23 !important; /* Orange primary buttons */
+        border-color: #e04e1a !important;
+    }
+    
+    .btn-primary:hover {
+        background-color: #e04e1a !important;
+        border-color: #d04515 !important;
+    }
+    
+    .btn-warning {
+        background-color: #FFC145 !important; /* Yellow warning buttons */
+        border-color: #ffba33 !important;
+        color: #000;
+    }
+    
+    .btn-warning:hover {
+        background-color: #ffba33 !important;
+        border-color: #ffb21a !important;
+    }
+    
+    .alert-info {
+        background-color: #FAEBE5; /* Light orange background */
+        border-color: #F8D5C6;
+        color: #5a3a2e;
+    }
+    
+    .table-dark {
+        background-color: #311F81; /* Dark purple header */
+    }
+    
+    .btn-success {
+        background-color: #28a745;
+    }
+    
+    .btn-outline-primary {
+        color: #F05A23;
+        border-color: #F05A23;
+    }
+    
+    .btn-outline-primary:hover {
+        background-color: #F05A23;
+        color: white;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="card shadow">
+        <div class="card-header text-white">
+            <h3 class="mb-0">
+                <i class="fas fa-file-alt me-2"></i>ประวัติการสมัครงานสหกิจศึกษา
+            </h3>
+        </div>
+        <div class="card-body">
+            <div class="alert alert-info">
+                <h4 class="alert-heading">
+                    <i class="fas fa-user-graduate me-2"></i>
+                    {{ student.name }} ({{ student.student_id }})
+                </h4>
+                <p class="mb-0">
+                    <i class="fas fa-file-signature me-2"></i>
+                    คุณมีใบสมัครทั้งหมด <strong>{{ application_count }}</strong> ใบ
+                </p>
+            </div>
+
+            {% if applications %}
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>วันที่สมัคร</th>
+                            <th>บริษัท</th>
+                            <th>ไฟล์เอกสาร</th>
+                            <th>สถานะ</th>
+                            <th>หมายเหตุ</th>
+                            <th>การดำเนินการ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for app in applications %}
+                        <tr>
+                            <td>{{ app.pdf_date|date:"d/m/Y" }}</td>
+                            <td>{{ app.company.name_th }}</td>
+                            <td>
+                                <a href="{{ app.pdf_file.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-file-pdf me-1"></i> ดูไฟล์
+                                </a>
+                            </td>
+                            <td>
+                                <span class="badge 
+                                    {% if app.status == 'approved' %}bg-success
+                                    {% elif app.status == 'rejected' %}bg-danger
+                                    {% else %}bg-warning text-dark{% endif %}">
+                                    {{ app.get_status_display }}
+                                </span>
+                            </td>
+                            <td>{{ app.comment|default:"-" }}</td>
+                            <td>
+                                <a href="{{ app.pdf_file.url }}" download class="btn btn-sm btn-success me-1">
+                                    <i class="fas fa-download me-1"></i> ดาวน์โหลด
+                                </a>
+                                {% if app.status == 'rejected' %}
+                                <a href="{% url 'application_form:application_form' app.company.id %}" class="btn btn-sm btn-warning">
+                                    <i class="fas fa-edit me-1"></i> แก้ไขใหม่
+                                </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="alert alert-warning">
+                <i class="fas fa-exclamation-circle me-2"></i>ยังไม่มีประวัติการสมัครงาน
+            </div>
+            {% endif %}
+            <div class="mt-4">
+                <a href="{% url 'core:home' %}" class="btn btn-secondary">
+                    <i class="fas fa-home me-1"></i> กลับหน้าหลัก
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,241 @@
+{% extends 'Core/base.html' %}
+{% load static %}
+
+{% block link %}
+{% endblock %}
+    
+{% block styleCustom %}
+<style>
+    .company-header {
+        background-color: #FF8C00;
+        color: white;
+        padding: 1rem;
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+    
+    .company-header:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    .company-logo {
+        max-height: 200px;
+        object-fit: contain;
+        margin-bottom: 1rem;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .info-section {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    
+    .info-box {
+        background-color: white;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    
+    .header_detail {
+        color: #FF8C00;
+        border-bottom: 2px solid #FF8C00;
+        padding-bottom: 0.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .job-card {
+        background-color: white;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        border-left: 4px solid #FF8C00;
+    }
+    
+    .review {
+        background-color: white;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    
+    .rating {
+        color: #FF8C00;
+        font-weight: bold;
+    }
+    
+    .user-icon {
+        font-size: 2rem;
+        margin-right: 1rem;
+        color: #FF8C00;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- ส่วนหัวหน้าเว็บ -->
+    <div class="company-header">
+        <h1 class="mb-0">ข้อมูลสถานประกอบการ</h1>
+    </div>
+    
+    <main>
+        <!-- ข้อมูลบริษัท -->
+        <section class="company-info text-center mb-5">
+            {% if company.logo %}
+                <img src="{{ company.logo.url }}" alt="Company Logo" class="company-logo img-fluid">
+            {% else %}
+                <div class="alert alert-secondary">ไม่มีรูปภาพบริษัท</div>
+            {% endif %}
+            
+            <h2 class="mb-4">บริษัท {{company.name_en}}</h2>
+
+            <div class="info-section">
+                <div class="row">
+                    <!-- ข้อมูลทั่วไป -->
+                    <div class="col-md-4 mb-4">
+                        <div class="info-box h-100">
+                            <h3 class="header_detail">ข้อมูลทั่วไปบริษัท</h3>
+                            <p><strong>ชื่อบริษัท (ภาษาไทย):</strong> {{company.name_th}}</p>
+                            <p><strong>ชื่อบริษัท (ภาษาอังกฤษ):</strong> {{company.name_en}}</p>
+                            <p><strong>E-mail:</strong> {{company.email}}</p>
+                            <p><strong>Website:</strong> 
+                                <a href="{{company.website}}" target="_blank" class="text-decoration-none">
+                                    {{company.website}}
+                                </a>
+                            </p>
+                            <p><strong>แนะนำบริษัท:</strong> {{company.description}}</p>
+                        </div>
+                    </div>
+
+                    <!-- ข้อมูลที่ตั้ง -->
+                    <div class="col-md-4 mb-4">
+                        <div class="info-box h-100">
+                            <h3 class="header_detail">ข้อมูลที่ตั้งบริษัท</h3>
+                            <p><strong>เลขที่:</strong> {{company.address_no}}</p>
+                            <p><strong>หมู่ที่:</strong> {{company.address_moo}}</p>
+                            <p><strong>จังหวัด:</strong> {{company.province}}</p>
+                            <p><strong>ถนน:</strong> {{company.address_road}}</p>
+                            <p><strong>ซอย:</strong> {{company.address_soi}}</p>
+                            <p><strong>อำเภอ:</strong> {{company.district}}</p>
+                            <p><strong>ตำบล:</strong> {{company.subdistrict}}</p>
+                            <p><strong>รหัสไปรษณีย์:</strong> {{company.postal_code}}</p>
+                        </div>
+                    </div>
+
+                    <!-- ข้อมูลผู้ประสานงาน -->
+                    <div class="col-md-4 mb-4">
+                        <div class="info-box h-100">
+                            <h3 class="header_detail">ข้อมูลผู้ประสานงาน</h3>
+                            <p><strong>ชื่อผู้ประสานงาน:</strong> {{hr.contact_name}}</p>
+                            <p><strong>ตำแหน่ง:</strong> {{hr.contact_position}}</p>
+                            <p><strong>แผนก/หน่วย/ฝ่าย:</strong> {{hr.contact_department}}</p>
+                            <p><strong>E-mail:</strong> {{hr.contact_email}}</p>
+                            <p><strong>โทรศัพท์:</strong> {{hr.contact_phone}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ตำแหน่งงาน -->
+            <div class="job-section mb-5">
+                <h3 class="review_header mb-4">ข้อมูลตำแหน่งงานที่เกี่ยวข้อง</h3>
+                
+                {% for job in jobs %}
+                <div class="job-card">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <h4 class="mb-0">{{ job.job_name.job_type }}</h4>
+                        <span class="badge bg-{% if job.job_status == 'open' %}success{% else %}secondary{% endif %}">
+                            {{ job.get_job_status_display }}
+                        </span>
+                    </div>
+                    
+                    <p class="mb-2"><strong>จำนวนที่เปิดรับสมัคร:</strong> {{ job.job_quantity }}</p>
+                    
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <div>
+                            <a href="{% url 'Jobinfo:info' job_id=job.job_id %}" 
+                               class="btn btn-outline-primary btn-sm">
+                               <i class="bi bi-info-circle"></i> รายละเอียด
+                            </a>
+                        </div>
+                        <small class="text-muted">อัปเดตล่าสุด: {{ job.updated_at|date:"d/m/Y" }}</small>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="alert alert-info">ไม่มีตำแหน่งงานที่เปิดรับสมัครในขณะนี้</div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- รีวิว -->
+        <section class="reviews mb-5">
+            <h3 class="h_review mb-4">รีวิวจากพนักงาน</h3>
+            
+            {% for review in reviews %}
+            <div class="review">
+                <div class="d-flex">
+                    <div class="user-icon flex-shrink-0">
+                        <i class="bi bi-person-circle"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="d-flex justify-content-between mb-2">
+                            <h5 class="mb-0">ผู้รีวิว: {{ review.reviewer_name|default:"ไม่ระบุชื่อ" }}</h5>
+                            <small class="text-muted">{{ review.created_at|date:"d/m/Y" }}</small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <span class="badge bg-{% if review.recommend %}success{% else %}danger{% endif %}">
+                                {{ review.recommend|yesno:"แนะนำ,ไม่แนะนำ" }}
+                            </span>
+                            <span class="ms-2 rating">
+                                <i class="bi bi-star-fill"></i> {{ review.overall_rating }}/5
+                            </span>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <p><strong>สวัสดิการ:</strong> <span class="rating">{{ review.benefits_rating }}/5</span></p>
+                            </div>
+                            <div class="col-md-4">
+                                <p><strong>สภาพแวดล้อม:</strong> <span class="rating">{{ review.environment_rating }}/5</span></p>
+                            </div>
+                            <div class="col-md-4">
+                                <p><strong>การจัดการ:</strong> <span class="rating">{{ review.management_rating }}/5</span></p>
+                            </div>
+                        </div>
+                        
+                        <p><strong>ตำแหน่งงาน:</strong> {{ review.job_type }}</p>
+                        <p><strong>ประสบการณ์:</strong> {{ review.experience }}</p>
+                        
+                        {% if review.advice %}
+                        <div class="alert alert-light mt-3">
+                            <strong><i class="bi bi-chat-quote"></i> คำแนะนำ:</strong> 
+                            {{ review.advice }}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="alert alert-secondary text-center py-4">
+                <i class="bi bi-info-circle-fill"></i> ยังไม่มีรีวิวสำหรับบริษัทนี้
+            </div>
+            {% endfor %}
+        </section>
+    </main>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

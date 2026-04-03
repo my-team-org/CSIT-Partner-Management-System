@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "Core/base.html" %}
 {% load static %}
 {% block content %}
 <div class="container">
@@ -19,7 +19,7 @@
                 </button>
             </div>
             <div class="col-md-1">
-                <a href="{% url 'index' %}" class="btn btn-secondary w-100">
+                <a href="{% url 'Admin_check:index' %}" class="btn btn-secondary w-100">
                     <i class="bi bi-arrow-counterclockwise"></i>
                 </a>
             </div>
@@ -40,10 +40,10 @@
           <tr>
               <td>{{application.id}}</td>
               <td>{{application.pdf_date}}</td>
-              <td>{{application.student_id}}</td>
+              <td>{{application.student.student_id}}</td>
               <td>{{application.pdf_file}}</td>
               <td>
-                <form method="GET" action="{% url 'admin_check' application.id %}">
+                <form method="GET" action="{% url 'Admin_check:admin_check' application.id %}">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-primary">
                         Show PDF

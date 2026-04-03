@@ -1,0 +1,174 @@
+{% extends "registration/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="row justify-content-center w-100">
+        <div class="col-lg-12 col-md-12">
+            <div class="card shadow-lg border-0">
+                <!-- ส่วนหัวการ์ด -->
+                <div class="card-header bg-orange-gradient text-white text-center py-4">
+                    <h3 class="mb-0"><i class="fas fa-sign-in-alt me-2"></i>เข้าสู่ระบบ</h3>
+                </div>
+                <div class="card-body p-5">
+                    <!-- แสดงข้อความ error ถ้ามี -->
+                    {% if form.errors %}
+                    <div class="alert alert-danger alert-dismissible fade show">
+                        <i class="fas fa-exclamation-circle me-2"></i>ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {% endif %}
+            
+                    <form method="post" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        
+                        <!-- ช่องกรอกชื่อผู้ใช้ -->
+                        <div class="mb-4">
+                            <label for="username" class="form-label fw-bold text-orange">ชื่อผู้ใช้</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-orange-light text-orange-dark">
+                                    <i class="fas fa-user"></i>
+                                </span>
+                                <input type="text" name="username" class="form-control form-control-lg" 
+                                       id="username" placeholder="กรอกชื่อผู้ใช้ของคุณ" required>
+                            </div>
+                        </div>
+                        
+                        <!-- ช่องกรอกรหัสผ่าน -->
+                        <div class="mb-4">
+                            <label for="password" class="form-label fw-bold text-orange">รหัสผ่าน</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-orange-light text-orange-dark">
+                                    <i class="fas fa-lock"></i>
+                                </span>
+                                <input type="password" name="password" class="form-control form-control-lg" 
+                                       id="password" placeholder="กรอกรหัสผ่านของคุณ" required>
+                            </div>
+                        </div>         
+                        
+                        <!-- ปุ่มส่งฟอร์ม -->
+                        <div class="d-grid mb-3">
+                            <button type="submit" class="btn btn-orange btn-lg py-3 fw-bold">
+                                <i class="fas fa-sign-in-alt me-2"></i>เข้าสู่ระบบ
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <!-- เส้นแบ่ง -->
+                    <div class="position-relative my-4">
+                        <hr class="border-orange-light">
+                        <div class="position-absolute top-50 start-50 translate-middle bg-white px-3 text-orange">หรือ</div>
+                    </div>
+                    
+                    <!-- ปุ่มสมัครสมาชิก -->
+                    <div class="d-grid">
+                        <a href="{% url 'accounts:register' %}" class="btn btn-outline-orange btn-lg py-3">
+                            <i class="fas fa-user-plus me-2"></i>สมัครสมาชิกใหม่
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- ส่วนท้ายการ์ด -->
+                <div class="card-footer bg-orange-light text-center py-3">
+                    <small class="text-orange-dark">© {% now "Y" %} Your Company. All rights reserved.</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- เพิ่ม CSS สีส้ม -->
+<style>
+  :root {
+    --orange-primary: #FF6B35;
+    --orange-secondary: #FFA630;
+    --orange-light: #FFD8A7;
+    --orange-dark: #E05D00;
+    --orange-darker: #C04A00;
+  }
+
+  .bg-orange-gradient {
+    background: linear-gradient(135deg, var(--orange-primary), var(--orange-secondary));
+  }
+
+  .bg-orange-light {
+    background-color: var(--orange-light);
+  }
+
+  .text-orange {
+    color: var(--orange-primary);
+  }
+
+  .text-orange-dark {
+    color: var(--orange-dark);
+  }
+
+  .border-orange-light {
+    border-color: var(--orange-light) !important;
+  }
+
+  .btn-orange {
+    background-color: var(--orange-primary);
+    border-color: var(--orange-primary);
+    color: white;
+    transition: all 0.3s ease;
+  }
+
+  .btn-orange:hover {
+    background-color: var(--orange-dark);
+    border-color: var(--orange-dark);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(224, 93, 0, 0.2);
+  }
+
+  .btn-outline-orange {
+    color: var(--orange-primary);
+    border-color: var(--orange-primary);
+  }
+
+  .btn-outline-orange:hover {
+    background-color: var(--orange-primary);
+    color: white;
+  }
+
+  body {
+    background-color: #f8f9fa;
+    background-image: linear-gradient(to bottom right, #fff8f5, #ffefe6);
+  }
+
+  .card {
+    border-radius: 15px;
+    overflow: hidden;
+    border: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(255, 107, 53, 0.15);
+  }
+
+  .form-control, .form-control-lg {
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ddd;
+  }
+
+  .form-control:focus {
+    border-color: var(--orange-secondary);
+    box-shadow: 0 0 0 0.25rem rgba(255, 166, 48, 0.25);
+  }
+
+  .input-group-text {
+    border-radius: 8px 0 0 8px !important;
+    border-right: none;
+  }
+
+  .alert-danger {
+    background-color: #fde8e8;
+    border-left: 4px solid #f44336;
+    color: #c62828;
+  }
+</style>
+{% endblock %}

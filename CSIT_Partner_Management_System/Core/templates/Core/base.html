@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>{% block title %} {% endblock %}</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    {% block link %} {% endblock %}
+
+    {% block styleCustom %}{% endblock %}
+    
+    {% block scriptCustom %}{% endblock %}
+
+</head>
+
+<body>
+    <!-- Navbar -->
+    <header>
+        <nav class="navbar navbar-light bg-white px-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{% url 'core:home' %}">
+                    <img src="{% static 'core/img/logo.png' %}" alt="Logo" width="100" height="100">
+                </a>
+                <div>
+                    {% if user.is_authenticated %}
+                        <!-- แสดงเมื่อล็อกอินแล้ว -->
+                        <div class="d-flex align-items-center">
+                            <span class="me-3">ยินดีต้อนรับ, {{ user.username }}</span>
+                            <form action="{% url 'accounts:logout' %}" method="post" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-danger btn-sm">
+                                    <i class="fas fa-sign-out-alt me-1"></i> Logout
+                                </button>
+                            </form>
+                        </div>
+                    {% else %}
+                        <!-- แสดงเมื่อยังไม่ได้ล็อกอิน -->
+                        <a href="{% url 'accounts:login' %}" class="btn btn-primary btn-sm">
+                            <i class="fas fa-sign-in-alt me-1"></i> Login
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    {% block content %} {% endblock %}
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

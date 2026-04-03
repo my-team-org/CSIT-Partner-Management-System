@@ -1,10 +1,10 @@
-{% extends "base.html" %}
+{% extends "Core/base.html" %}
 {% load static %}
 {% block content %}
 <div class="container">
   <div class="modal-title d-flex justify-content-between align-items-center">
     <h1>PDF Viewer</h1>
-    <a href = "{% url 'index'%}" type="button" class="btn-close" ></a>
+    <a href = "{% url 'Admin_check:index'%}" type="button" class="btn-close" ></a>
   </div>
 
   <!-- Display PDF -->

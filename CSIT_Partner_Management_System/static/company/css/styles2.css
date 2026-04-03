@@ -1,0 +1,70 @@
+/* ตั้งค่าพื้นฐาน */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
+}
+
+/* ปรับแต่ง Card */
+.custom-card {
+    max-width: 600px;
+    margin: auto;
+    border-radius: 10px;
+    background-color: #ffffff;
+    border: 3px solid #ff7f00;
+}
+
+/* ปรับแต่ง Header */
+.card-header {
+    background: linear-gradient(90deg, #ff7f00, #6a0dad);
+    border-radius: 10px 10px 0 0;
+    padding: 15px;
+}
+
+/* ปรับแต่ง Input Field */
+.form-control {
+    border-radius: 5px;
+    border: 1px solid #6a0dad;
+}
+
+/* ปรับแต่งปุ่ม */
+.btn-orange {
+    background-color: #ff7f00;
+    border: none;
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.btn-orange:hover {
+    background-color: #e06b00;
+}
+
+.btn-purple {
+    background-color: #6a0dad;
+    border: none;
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.btn-purple:hover {
+    background-color: #5b0ba5;
+}
+
+/* ปรับแต่งลิงก์ย้อนกลับ */
+.back-link {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    font-size: 18px;
+    color: #6a0dad;
+    text-decoration: none;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}

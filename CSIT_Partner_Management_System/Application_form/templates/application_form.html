@@ -1,0 +1,432 @@
+{% extends 'Core/base.html' %}
+
+{% load static %}
+
+{% block title %}แบบฟอร์มสมัครงานสหกิจศึกษา {% endblock %}
+    
+{% block link %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block styleCustom %}
+    <style>
+        :root {
+            --primary-color: #FF9B34;
+            --primary-hover: #FF7E16;
+            --secondary-color: #003366;
+            --light-bg: rgba(255, 196, 128, 0.4);
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            font-family: 'TH SarabunPSK', 'Sarabun', sans-serif;
+            line-height: 1.6;
+        }
+        
+        .card {
+            border-radius: 15px;
+            border: none;
+            max-width: 1000px;
+            margin: 20px auto;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .card-header {
+            background-color: var(--light-bg);
+            color: #000;
+            text-align: center;
+            padding: 20px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            border-bottom: 2px solid var(--primary-color);
+        }
+        
+        .info-section {
+            padding: 20px;
+            margin-bottom: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .form-section {
+            padding: 20px;
+            margin-bottom: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .section-title {
+            color: var(--secondary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: bold;
+            position: relative;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: var(--primary-color);
+        }
+        
+        .info-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .info-label {
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        .info-value {
+            color: #212529;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 8px;
+        }
+        
+        .form-control, .form-select, .form-file {
+            border-radius: 8px;
+            border: 1px solid #ced4da;
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(255, 155, 68, 0.25);
+        }
+        
+        .btn-submit {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+            border-radius: 8px;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .btn-submit:hover {
+            background-color: var(--primary-hover);
+            border-color: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+        
+        /* ปุ่มกลับขึ้นด้านบน */
+        #back-to-top {
+            display: none;
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 99;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+        
+        #back-to-top:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-3px);
+        }
+        
+        /* ข้อความแจ้งเตือน */
+        .alert {
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .card-header {
+                font-size: 1.4rem;
+                padding: 15px;
+            }
+            
+            .section-title {
+                font-size: 1.2rem;
+            }
+            
+            .form-control, .form-select {
+                padding: 8px 12px;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="container py-4">
+        <!-- ข้อความแจ้งเตือน -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-file-alt me-2"></i>แบบฟอร์มสมัครงานสหกิจศึกษา
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                    {% csrf_token %}
+                    
+                    <!-- ส่วนที่ 1: รายละเอียดหน่วยงาน (แบบอ่านอย่างเดียว) -->
+                    <section class="info-section">
+                        <div class="section-title">
+                            <i class="fas fa-building me-2"></i>ส่วนที่ 1: รายละเอียดหน่วยงาน
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="info-item">
+                                    <div class="info-label">ชื่อหน่วยงาน (ไทย)</div>
+                                    <div class="info-value">{{ company.name_th }}</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">ชื่อหน่วยงาน (อังกฤษ)</div>
+                                    <div class="info-value">{{ company.name_en }}</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">ประเภทบริษัท</div>
+                                    <div class="info-value">{{ company.get_company_type_display }}</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="info-item">
+                                    <div class="info-label">ที่อยู่</div>
+                                    <div class="info-value">
+                                        {{ company.address_no }} {{ company.address_building }} 
+                                        {{ company.address_soi }} {{ company.address_road }}<br>
+                                        {{ company.subdistrict }} {{ company.district }} 
+                                        {{ company.province }} {{ company.postal_code }}
+                                    </div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">เว็บไซต์</div>
+                                    <div class="info-value">{{ company.website }}</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">อีเมล</div>
+                                    <div class="info-value">{{ company.email }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- ข้อมูลผู้ประสานงาน (แบบอ่านอย่างเดียว) -->
+                    <section class="info-section">
+                        <div class="section-title">
+                            <i class="fas fa-user-tie me-2"></i>ข้อมูลผู้ประสานงาน
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="info-item">
+                                    <div class="info-label">ชื่อผู้ประสานงาน</div>
+                                    <div class="info-value">{{ human_resource.contact_name }}</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">ตำแหน่ง</div>
+                                    <div class="info-value">{{ human_resource.contact_position }}</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="info-item">
+                                    <div class="info-label">แผนก/หน่วยงาน</div>
+                                    <div class="info-value">{{ human_resource.contact_department }}</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">โทรศัพท์</div>
+                                    <div class="info-value">{{ human_resource.contact_phone }}</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">อีเมล</div>
+                                    <div class="info-value">{{ human_resource.contact_email }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- ข้อมูลตำแหน่งงาน (แบบอ่านอย่างเดียว) -->
+                    <section class="info-section">
+                        <div class="section-title">
+                            <i class="fas fa-briefcase me-2"></i>ข้อมูลตำแหน่งงาน
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="info-item">
+                                    <div class="info-label">ตำแหน่งงาน</div>
+                                    <div class="info-value">{{ job.job_name }}</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">จำนวนที่เปิดรับ</div>
+                                    <div class="info-value">{{ job.job_quantity }}</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">วันที่ประกาศ</div>
+                                    <div class="info-value">{{ job.job_posted|date:"d/m/Y" }}</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="info-item">
+                                    <div class="info-label">สาขาวิชา</div>
+                                    <div class="info-value">{{ job.job_department }}</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">สถานะ</div>
+                                    <div class="info-value">{{ job.get_job_status_display }}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">รายละเอียดงาน</div>
+                            <div class="info-value">{{ job.job_description }}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">ทักษะที่ต้องการ</div>
+                            <div class="info-value">{{ job.job_skill }}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">สวัสดิการ</div>
+                            <div class="info-value">{{ job.job_welfare_benefit }}</div>
+                        </div>
+                    </section>
+                    
+                    <!-- ส่วนที่ 2: ข้อมูลส่วนตัวนิสิต (แบบแก้ไขได้) -->
+                    <section class="form-section">
+                        <div class="section-title">
+                            <i class="fas fa-user-graduate me-2"></i>ส่วนที่ 2: ข้อมูลส่วนตัวนิสิต
+                        </div>
+                        {% for field in student_form %}
+                            <div class="form-group">
+                                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                                {{ field }}
+                                {% if field.help_text %}
+                                    <small class="form-text text-muted">{{ field.help_text }}</small>
+                                {% endif %}
+                                {% for error in field.errors %}
+                                    <div class="invalid-feedback d-block">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+                    </section>
+                    
+                        <!-- ส่วนปุ่ม Submit และ Cancel -->
+                    <div class="d-flex justify-content-between mt-5">
+                        <button type="button" onclick="window.history.back()" class="btn btn-secondary">
+                            <i class="fas fa-times me-2"></i>ยกเลิก
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i>บันทึกข้อมูล
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ปุ่มกลับไปด้านบน -->
+    <button id="back-to-top" class="btn" title="กลับไปด้านบน">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // กลับไปด้านบน
+        const backToTopButton = document.getElementById("back-to-top");
+        
+        window.addEventListener("scroll", () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.style.display = "block";
+            } else {
+                backToTopButton.style.display = "none";
+            }
+        });
+        
+        backToTopButton.addEventListener("click", () => {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        });
+        
+        // Form validation
+        (function () {
+            'use strict'
+            
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            const forms = document.querySelectorAll('.needs-validation')
+            
+            // Loop over them and prevent submission
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+        
+        // เพิ่มการแสดงตัวอย่างรูปภาพก่อนอัพโหลด
+        document.addEventListener("DOMContentLoaded", function() {
+            const photoInput = document.querySelector("#id_photo");
+            if (photoInput) {
+                photoInput.addEventListener("change", function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            const preview = document.getElementById("photo-preview");
+                            if (!preview) {
+                                const newPreview = document.createElement("img");
+                                newPreview.id = "photo-preview";
+                                newPreview.src = event.target.result;
+                                newPreview.style.maxWidth = "200px";
+                                newPreview.style.marginTop = "10px";
+                                newPreview.style.borderRadius = "5px";
+                                photoInput.parentNode.appendChild(newPreview);
+                            } else {
+                                preview.src = event.target.result;
+                            }
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+        });
+    </script>
+{% endblock %}

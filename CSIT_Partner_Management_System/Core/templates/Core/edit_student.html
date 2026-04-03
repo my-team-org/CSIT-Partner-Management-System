@@ -1,0 +1,515 @@
+{% extends 'Core/base.html' %}
+
+{% block styleCustom %}
+<style>
+  :root {
+    --orange-primary: #FF6B35;
+    --orange-secondary: #FFA630;
+    --orange-light: #FFD8A7;
+    --orange-dark: #E05D00;
+    --white: #FFFFFF;
+    --gray-light: #F5F5F5;
+    --gray-medium: #E0E0E0;
+    --gray-dark: #757575;
+  }
+
+  .bg-orange-gradient {
+    background: linear-gradient(135deg, var(--orange-primary), var(--orange-secondary));
+  }
+
+  .btn-orange {
+    background-color: var(--orange-primary);
+    border-color: var(--orange-primary);
+    color: white;
+    transition: all 0.3s ease;
+  }
+
+  .btn-orange:hover {
+    background-color: var(--orange-dark);
+    border-color: var(--orange-dark);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(224, 93, 0, 0.2);
+  }
+
+  .form-control:focus {
+    border-color: var(--orange-secondary);
+    box-shadow: 0 0 0 0.25rem rgba(255, 166, 48, 0.25);
+  }
+
+  .section-header {
+    color: var(--orange-primary);
+    border-bottom: 2px solid var(--orange-light);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .form-section {
+    background-color: rgba(255, 214, 167, 0.1);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid var(--orange-light);
+  }
+
+  .invalid-feedback {
+    color: var(--orange-dark);
+  }
+
+  .text-orange {
+    color: var(--orange-primary);
+  }
+
+  .text-orange-light {
+    color: var(--orange-light);
+  }
+
+  .border-orange-light {
+    border-color: var(--orange-light);
+  }
+
+  /* การ์ดและเอฟเฟกต์ */
+  .card {
+    border-radius: 1rem;
+    overflow: hidden;
+    border: none;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 1rem 2rem rgba(255, 107, 53, 0.15);
+  }
+
+  /* ปุ่ม radio */
+  .form-check-input:checked {
+    background-color: var(--orange-primary);
+    border-color: var(--orange-primary);
+  }
+
+  /* ปุ่มไฟล์อัพโหลด */
+  .custom-file-button {
+    background-color: var(--orange-secondary);
+    color: white;
+  }
+
+  /* ปรับแต่ง date picker */
+  input[type="date"] {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+  }
+
+  /* ปรับแต่ง alert */
+  .alert-orange {
+    background-color: rgba(255, 107, 53, 0.1);
+    border-left: 4px solid var(--orange-primary);
+    color: var(--orange-dark);
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-xl-10">
+            <div class="card shadow-lg">
+                <div class="card-header bg-orange-gradient text-white py-4">
+                    <h2 class="h4 mb-0">
+                        <i class="fas fa-user-edit me-2"></i>แก้ไขข้อมูลนิสิต
+                    </h2>
+                </div>
+                
+                <div class="card-body p-5">
+                    {% if messages %}
+                    <div class="alert alert-orange alert-dismissible fade show mb-4">
+                        {% for message in messages %}
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <div>{{ message }}</div>
+                        </div>
+                        {% endfor %}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {% endif %}
+
+                    <form method="post" enctype="multipart/form-data" novalidate>
+                        {% csrf_token %}
+                        
+                        <!-- ข้อมูลพื้นฐาน -->
+                        <div class="form-section">
+                            <h3 class="section-header">
+                                <i class="fas fa-id-card me-2"></i>ข้อมูลพื้นฐาน
+                            </h3>
+                            
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="{{ form.student_id.id_for_label }}" class="form-label fw-bold text-orange">
+                                        {{ form.student_id.label }}
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-orange-light">
+                                            <i class="fas fa-id-card text-orange-dark"></i>
+                                        </span>
+                                        {{ form.student_id }}
+                                    </div>
+                                    <small class="form-text text-orange-light">
+                                        <i class="fas fa-info-circle me-1"></i>กรุณากรอกรหัสนิสิต 10 หลัก
+                                    </small>
+                                    {% if form.student_id.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        <i class="fas fa-exclamation-circle me-1"></i>{{ form.student_id.errors.0 }}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <label for="{{ form.name.id_for_label }}" class="form-label fw-bold text-orange">
+                                        {{ form.name.label }}
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-orange-light">
+                                            <i class="fas fa-user text-orange-dark"></i>
+                                        </span>
+                                        {{ form.name }}
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <label for="{{ form.field_of_study.id_for_label }}" class="form-label fw-bold text-orange">
+                                        {{ form.field_of_study.label }}
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-orange-light">
+                                            <i class="fas fa-graduation-cap text-orange-dark"></i>
+                                        </span>
+                                        {{ form.field_of_study }}
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <label for="{{ form.year.id_for_label }}" class="form-label fw-bold text-orange">
+                                        {{ form.year.label }}
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-orange-light">
+                                            <i class="fas fa-calendar-alt text-orange-dark"></i>
+                                        </span>
+                                        {{ form.year }}
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <label for="{{ form.id_card.id_for_label }}" class="form-label fw-bold text-orange">
+                                        {{ form.id_card.label }}
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-orange-light">
+                                            <i class="fas fa-address-card text-orange-dark"></i>
+                                        </span>
+                                        {{ form.id_card }}
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold text-orange">เพศ</label>
+                                    <div class="d-flex gap-4 ps-3">
+                                        {% for radio in form.gender %}
+                                        <div class="form-check">
+                                            {{ radio.tag }}
+                                            <label for="{{ radio.id_for_label }}" class="form-check-label">
+                                                {{ radio.choice_label }}
+                                            </label>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ข้อมูลติดต่อ -->
+                        <div class="form-section">
+                            <h3 class="section-header">
+                                <i class="fas fa-address-book me-2"></i>ข้อมูลติดต่อ
+                            </h3>
+                            
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label for="{{ form.address.id_for_label }}" class="form-label fw-bold text-orange">
+                                        {{ form.address.label }}
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-orange-light">
+                                            <i class="fas fa-map-marker-alt text-orange-dark"></i>
+                                        </span>
+                                        {{ form.address }}
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <label for="{{ form.mobile_phone.id_for_label }}" class="form-label fw-bold text-orange">
+                                        {{ form.mobile_phone.label }}
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-orange-light">
+                                            <i class="fas fa-phone text-orange-dark"></i>
+                                        </span>
+                                        {{ form.mobile_phone }}
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <label for="{{ form.email.id_for_label }}" class="form-label fw-bold text-orange">
+                                        {{ form.email.label }}
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-orange-light">
+                                            <i class="fas fa-envelope text-orange-dark"></i>
+                                        </span>
+                                        {{ form.email }}
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <label for="{{ form.emergency_contact.id_for_label }}" class="form-label fw-bold text-orange">
+                                        {{ form.emergency_contact.label }}
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-orange-light">
+                                            <i class="fas fa-user-friends text-orange-dark"></i>
+                                        </span>
+                                        {{ form.emergency_contact }}
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <label for="{{ form.emergency_phone.id_for_label }}" class="form-label fw-bold text-orange">
+                                        {{ form.emergency_phone.label }}
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-orange-light">
+                                            <i class="fas fa-phone-alt text-orange-dark"></i>
+                                        </span>
+                                        {{ form.emergency_phone }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ข้อมูลสุขภาพ -->
+                        <div class="form-section">
+                            <h3 class="section-header">
+                                <i class="fas fa-heartbeat me-2"></i>ข้อมูลสุขภาพ
+                            </h3>
+                            
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label for="{{ form.height.id_for_label }}" class="form-label fw-bold text-orange">
+                                        {{ form.height.label }}
+                                    </label>
+                                    <div class="input-group">
+                                        {{ form.height }}
+                                        <span class="input-group-text bg-orange-light text-orange-dark">ซม.</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label for="{{ form.weight.id_for_label }}" class="form-label fw-bold text-orange">
+                                        {{ form.weight.label }}
+                                    </label>
+                                    <div class="input-group">
+                                        {{ form.weight }}
+                                        <span class="input-group-text bg-orange-light text-orange-dark">กก.</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label for="{{ form.soldier_status.id_for_label }}" class="form-label fw-bold text-orange">
+                                        {{ form.soldier_status.label }}
+                                    </label>
+                                    {{ form.soldier_status }}
+                                </div>
+                                
+                                <div class="col-12">
+                                    <label for="{{ form.disease.id_for_label }}" class="form-label fw-bold text-orange">
+                                        {{ form.disease.label }}
+                                    </label>
+                                    {{ form.disease }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ข้อมูลการศึกษา -->
+                        <div class="form-section">
+                            <h3 class="section-header">
+                                <i class="fas fa-graduation-cap me-2"></i>ข้อมูลการศึกษา
+                            </h3>
+                            
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="{{ form.gpa_term.id_for_label }}" class="form-label fw-bold text-orange">
+                                        {{ form.gpa_term.label }}
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-orange-light">
+                                            <i class="fas fa-star text-orange-dark"></i>
+                                        </span>
+                                        {{ form.gpa_term }}
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <label for="{{ form.gpa_total.id_for_label }}" class="form-label fw-bold text-orange">
+                                        {{ form.gpa_total.label }}
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-orange-light">
+                                            <i class="fas fa-star-half-alt text-orange-dark"></i>
+                                        </span>
+                                        {{ form.gpa_total }}
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <label for="{{ form.internship_start_date.id_for_label }}" class="form-label fw-bold text-orange">
+                                        {{ form.internship_start_date.label }}
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-orange-light">
+                                            <i class="fas fa-calendar-day text-orange-dark"></i>
+                                        </span>
+                                        {{ form.internship_start_date }}
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <label for="{{ form.internship_end_date.id_for_label }}" class="form-label fw-bold text-orange">
+                                        {{ form.internship_end_date.label }}
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-orange-light">
+                                            <i class="fas fa-calendar-day text-orange-dark"></i>
+                                        </span>
+                                        {{ form.internship_end_date }}
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12">
+                                    <label for="{{ form.advisor.id_for_label }}" class="form-label fw-bold text-orange">
+                                        {{ form.advisor.label }}
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-orange-light">
+                                            <i class="fas fa-chalkboard-teacher text-orange-dark"></i>
+                                        </span>
+                                        {{ form.advisor }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- เอกสารแนบ -->
+                        <div class="form-section">
+                            <h3 class="section-header">
+                                <i class="fas fa-paperclip me-2"></i>เอกสารแนบ
+                            </h3>
+                            
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label for="{{ form.photo.id_for_label }}" class="form-label fw-bold text-orange">
+                                        {{ form.photo.label }}
+                                    </label>
+                                    <div class="input-group">
+                                        {{ form.photo }}
+                                        <label class="input-group-text bg-orange-light text-orange-dark" for="{{ form.photo.id_for_label }}">
+                                            <i class="fas fa-upload me-1"></i>อัพโหลด
+                                        </label>
+                                    </div>
+                                    {% if form.instance.photo %}
+                                    <div class="mt-2">
+                                        <a href="{{ form.instance.photo.url }}" target="_blank" class="btn btn-sm btn-outline-orange">
+                                            <i class="fas fa-eye me-1"></i>ดูไฟล์ปัจจุบัน
+                                        </a>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label for="{{ form.resume.id_for_label }}" class="form-label fw-bold text-orange">
+                                        {{ form.resume.label }}
+                                    </label>
+                                    <div class="input-group">
+                                        {{ form.resume }}
+                                        <label class="input-group-text bg-orange-light text-orange-dark" for="{{ form.resume.id_for_label }}">
+                                            <i class="fas fa-upload me-1"></i>อัพโหลด
+                                        </label>
+                                    </div>
+                                    {% if form.instance.resume %}
+                                    <div class="mt-2">
+                                        <a href="{{ form.instance.resume.url }}" target="_blank" class="btn btn-sm btn-outline-orange">
+                                            <i class="fas fa-eye me-1"></i>ดูไฟล์ปัจจุบัน
+                                        </a>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label for="{{ form.transcript.id_for_label }}" class="form-label fw-bold text-orange">
+                                        {{ form.transcript.label }}
+                                    </label>
+                                    <div class="input-group">
+                                        {{ form.transcript }}
+                                        <label class="input-group-text bg-orange-light text-orange-dark" for="{{ form.transcript.id_for_label }}">
+                                            <i class="fas fa-upload me-1"></i>อัพโหลด
+                                        </label>
+                                    </div>
+                                    {% if form.instance.transcript %}
+                                    <div class="mt-2">
+                                        <a href="{{ form.instance.transcript.url }}" target="_blank" class="btn btn-sm btn-outline-orange">
+                                            <i class="fas fa-eye me-1"></i>ดูไฟล์ปัจจุบัน
+                                        </a>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-center gap-3 mt-5">
+                            <button type="submit" class="btn btn-orange px-4 py-3 fw-bold">
+                                <i class="fas fa-save me-2"></i>บันทึกการเปลี่ยนแปลง
+                            </button>
+                            <a href="{% url 'core:home' %}" class="btn btn-outline-secondary px-4 py-3">
+                                <i class="fas fa-times me-2"></i>ยกเลิก
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// แสดงชื่อไฟล์เมื่อเลือก
+document.querySelectorAll('input[type="file"]').forEach(input => {
+    input.addEventListener('change', function() {
+        const fileName = this.files[0]?.name || 'ยังไม่ได้เลือกไฟล์';
+        const label = this.nextElementSibling;
+        if (label) {
+            label.querySelector('span').textContent = fileName;
+        }
+    });
+});
+
+// ปรับแต่ง date picker
+document.querySelectorAll('input[type="date"]').forEach(input => {
+    input.addEventListener('change', function() {
+        if (this.value) {
+            this.style.color = '#212529';
+        } else {
+            this.style.color = '#6c757d';
+        }
+    });
+});
+</script>
+{% endblock %}

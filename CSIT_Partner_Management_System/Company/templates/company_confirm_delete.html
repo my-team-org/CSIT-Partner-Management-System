@@ -1,0 +1,7 @@
+<h1>ยืนยันการลบ</h1>
+<p>คุณแน่ใจหรือไม่ว่าต้องการลบ {{ company.name_th }}?</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">ใช่, ลบ</button>
+</form>
+<a href="{% url 'company_list' %}">ยกเลิก</a>
